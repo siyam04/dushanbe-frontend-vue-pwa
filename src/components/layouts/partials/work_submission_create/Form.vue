@@ -273,7 +273,7 @@
 import $ from "jquery"
 import axios from "axios"
 import Swal from "sweetalert2"
-import {getRequest} from '../../../../plugins/requestHandler'
+import {getRequest} from "@/plugins/requestHandler";
 
 
 // IDB
