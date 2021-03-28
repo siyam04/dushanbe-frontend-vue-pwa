@@ -44,7 +44,8 @@
 
 <!-- script section -->
 <script>
-import axios from "axios";
+// import axios from "axios";
+import {getRequest} from "@/plugins/requestHandler";
 
 export default {
   name: "Navbar",
@@ -60,25 +61,33 @@ export default {
 
   methods: {
     // Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/
-    logout() {
-      const token = localStorage.getItem("token");
-      axios
-        .get(
-          "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/logout/",
-          {
-            headers: { Authorization: `token ${token}` },
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    // logout() {
+    //   const token = localStorage.getItem("token");
+    //   axios
+    //     .get(
+    //       "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/logout/",
+    //       {
+    //         headers: { Authorization: `token ${token}` },
+    //       }
+    //     )
+    //     .then((res) => {
+    //       console.log(res.data);
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    //   localStorage.removeItem("token");
+    //   localStorage.clear();
+    //   this.$router.push("/");
+    // }, // logout
+
+    logout(){
+      getRequest('logout/');
       localStorage.removeItem("token");
       localStorage.clear();
       this.$router.push("/");
-    }, // logout
+    }
+
   }, // methods
 }; // export default
 </script>
