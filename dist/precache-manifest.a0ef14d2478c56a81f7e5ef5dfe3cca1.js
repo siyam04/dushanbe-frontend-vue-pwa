@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "042c6679c8172a5c54f5",
+    "revision": "9f61b58d98deed0b67a9",
     "url": "/css/app.e8d5a327.css"
   },
   {
@@ -8,12 +8,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/css/chunk-vendors.52eaf30c.css"
   },
   {
-    "revision": "2e820242597c8f389fdaeb2e85d74d6a",
+    "revision": "a3285d917387565d104a47676c551657",
     "url": "/index.html"
   },
   {
-    "revision": "042c6679c8172a5c54f5",
-    "url": "/js/app.d1960c04.js"
+    "revision": "9f61b58d98deed0b67a9",
+    "url": "/js/app.09a031af.js"
   },
   {
     "revision": "e65f1ffc1ffe011c614e",
@@ -22,10 +22,6 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "39a6a5e298b9de48d9b47f13d15c0826",
     "url": "/manifest.json"
-  },
-  {
-    "revision": "729a4c7e8aa67373d69f751437bd44cb",
-    "url": "/pfeiffer_logo_original.png"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
