@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.bba4d68b04baf5066b1a4fda1021a6fc.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.0678a5734aefb3e51ad0bc239d907b89.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 
@@ -65,21 +65,20 @@ workbox.routing.registerRoute(
     })
 );
 
-/* Testing (https://developers.google.com/web/tools/workbox/modules/workbox-routing?hl=en) */
-const matchCb = ({url, request, event}) => {
-    return (url.pathname === "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/");
-};
-
-const handlerCb = async ({url, request, event, params}) => {
-    const response = await fetch(request);
-    const responseBody = await response.json();
-    return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`, {
-        headers: response.headers,
-    });
-};
+const cacheName = 'pages';
+const matchCallback = ({ request }) => request.mode === 'navigate';
+// const networkTimeoutSeconds = 3;
 
 workbox.routing.registerRoute(
-    new RegExp('/api/.*\\.json'),
-    handlerCb,
-    'POST'
+    matchCallback,
+    new NetworkFirst({
+        // networkTimeoutSeconds,
+        cacheName,
+        plugins: [
+            new workbox.expiration.CacheableResponsePlugin({
+                statuses: [0, 200],
+            }),
+        ],
+    }),
 );
+
