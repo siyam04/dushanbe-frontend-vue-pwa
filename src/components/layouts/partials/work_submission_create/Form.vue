@@ -389,7 +389,7 @@ export default {
         }
       }
 
-    },// getAllData
+    },
 
     /* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
     loadType: function () {
