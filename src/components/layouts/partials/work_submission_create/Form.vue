@@ -389,7 +389,7 @@ export default {
         }
       }
 
-    },// getAllData
+    },
 
     /* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
     loadType: function () {
@@ -455,7 +455,7 @@ export default {
       });
     },
 
-    // Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/
+    /* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     async submitBillSubmissionForm() {
       const token = localStorage.getItem("token")
 

@@ -143,11 +143,10 @@
 
 <!-- script section -->
 <script>
-import axios from "axios";
+import axios from "axios"
 
 export default {
   name: "WorkSubmissionList",
-
   data() {
     return {
       all_work_submissions: [],
@@ -155,13 +154,12 @@ export default {
       currentPage: 1,
       itemPerPage: 5,
       isLoading: true,
-    };
+    }
   },
   methods: {
     loadWorkSubmission() {
-      const token = localStorage.getItem("token");
-      const user_id = parseInt(localStorage.getItem("id"));
-
+      const token = localStorage.getItem("token")
+      const user_id = parseInt(localStorage.getItem("id"))
       axios
           .get(this.baseUrl, {
             headers: {
@@ -174,45 +172,37 @@ export default {
           })
           .then((response) => {
             this.all_work_submissions = response.data.results
-            // this.all_work_submissions.map(item => {
-            //   console.log('--ITEM--', item.created_by)
-            //   console.log('--ITEM--', item.created_by.username)
-            // })
           })
           .catch((err) => {
-            console.log(err);
-          });
+            console.log(err)
+          })
     },
-
     setPage: function (pageNumber) {
       if (pageNumber <= 0 || pageNumber > this.totalPage) {
-        return;
+        return
       }
-
-      this.currentPage = pageNumber;
-      // console.log("Current Page: ", this.currentPage);
+      this.currentPage = pageNumber
+      // console.log("Current Page: ", this.currentPage)
     },
   },
   created() {
-    this.loadWorkSubmission();
+    this.loadWorkSubmission()
   },
   computed: {
     // show all  posts
     displayedPosts() {
-      return this.all_work_submissions;
+      return this.all_work_submissions
     },
-
     //
     pageStart: function () {
-      return (this.currentPage - 1) * this.itemPerPage;
+      return (this.currentPage - 1) * this.itemPerPage
     },
-
     // show total pages
     totalPage: function () {
-      return Math.ceil(this.all_work_submissions.length / this.itemPerPage);
+      return Math.ceil(this.all_work_submissions.length / this.itemPerPage)
     },
   },
-}; // export default
+} // export default
 </script>
 
 <!-- css section -->
@@ -366,7 +356,6 @@ export default {
 }
 
 /* ///////////// Custom accordion ///////////////// */
-
 /* //////////////// responsive //////////////// */
 @media (max-width: 768px) {
   .accordion .card-body .type-and-user {
