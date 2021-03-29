@@ -65,5 +65,21 @@ workbox.routing.registerRoute(
     })
 );
 
+/* Testing (https://developers.google.com/web/tools/workbox/modules/workbox-routing?hl=en) */
+const matchCb = ({url, request, event}) => {
+    return (url.pathname === "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/");
+};
 
+const handlerCb = async ({url, request, event, params}) => {
+    const response = await fetch(request);
+    const responseBody = await response.json();
+    return new Response(`${responseBody} <!-- Look Ma. Added Content. -->`, {
+        headers: response.headers,
+    });
+};
 
+workbox.routing.registerRoute(
+    new RegExp('/api/.*\\.json'),
+    handlerCb,
+    'POST'
+);
