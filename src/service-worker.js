@@ -10,7 +10,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 /* Testing */
 
 /* workbox-background-sync */
-const bgSyncPlugin = new workbox.backgroundSync.BackgroundSy('queueExample', {
+const bgSyncPlugin = new workbox.backgroundSync.Plugin('queueExample', {
     maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 

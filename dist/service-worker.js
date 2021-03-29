@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.0678a5734aefb3e51ad0bc239d907b89.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.7fd6fb732c186bf9170fe7d6781675eb.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 
@@ -12,7 +12,7 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 /* Testing */
 
 /* workbox-background-sync */
-const bgSyncPlugin = new workbox.backgroundSync.BackgroundSy('queueExample', {
+const bgSyncPlugin = new workbox.backgroundSync.Plugin('queueExample', {
     maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 
