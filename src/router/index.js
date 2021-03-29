@@ -9,7 +9,7 @@ import WorkSubmissionCreate from "@/views/WorkSubmissionCreate";
 import WorkSubmissionList from "@/components/layouts/partials/work_submission_create/WorkSubmissionList";
 
 /* router middlewares */
-import router_middlewares from "@/middlewares/middlewares";
+// import router_middlewares from "@/middlewares/middlewares";
 
 
 /* custom routes */
@@ -25,7 +25,7 @@ const routes = [
         path: "/work-submission-create",
         name: "WorkSubmissionCreate",
         component: WorkSubmissionCreate,
-        beforeEnter: router_middlewares.app_mode(),
+        // beforeEnter: router_middlewares.app_mode(),
     },
 
     {
