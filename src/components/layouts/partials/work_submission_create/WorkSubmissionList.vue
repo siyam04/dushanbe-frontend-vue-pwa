@@ -144,6 +144,7 @@
 <!-- script section -->
 <script>
 import axios from "axios";
+import {getRequest} from "@/plugins/requestHandler";
 
 export default {
   name: "WorkSubmissionList",
@@ -151,19 +152,21 @@ export default {
   data() {
     return {
       all_work_submissions: [],
-      baseUrl: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+      url: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
       currentPage: 1,
       itemPerPage: 5,
       isLoading: true,
     };
   },
   methods: {
+
+    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
       const token = localStorage.getItem("token");
       const user_id = parseInt(localStorage.getItem("id"));
 
       axios
-          .get(this.baseUrl, {
+          .get(this.url, {
             headers: {
               Authorization: `token ${token}`,
             },
@@ -174,10 +177,6 @@ export default {
           })
           .then((response) => {
             this.all_work_submissions = response.data.results
-            // this.all_work_submissions.map(item => {
-            //   console.log('--ITEM--', item.created_by)
-            //   console.log('--ITEM--', item.created_by.username)
-            // })
           })
           .catch((err) => {
             console.log(err);
@@ -193,9 +192,11 @@ export default {
       // console.log("Current Page: ", this.currentPage);
     },
   },
+
   created() {
     this.loadWorkSubmission();
   },
+
   computed: {
     // show all  posts
     displayedPosts() {

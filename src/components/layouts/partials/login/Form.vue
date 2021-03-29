@@ -110,7 +110,7 @@ export default {
 
   methods: {
 
-    // Login (POST): https://dushanbe-backend-apis.herokuapp.com/api/login/
+    /* Login (POST): https://dushanbe-backend-apis.herokuapp.com/api/login/ */
     loginSubmit() {
       axios
           .post("https://dushanbe-backend-apis.herokuapp.com/api/login/", {

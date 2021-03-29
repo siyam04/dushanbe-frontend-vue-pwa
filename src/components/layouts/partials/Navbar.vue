@@ -44,7 +44,7 @@
 
 <!-- script section -->
 <script>
-// import axios from "axios";
+import axios from "axios";
 import {getRequest} from "@/plugins/requestHandler";
 
 export default {
@@ -60,7 +60,16 @@ export default {
   }, // data
 
   methods: {
-    // Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/
+
+    /* Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/ */
+    logout(){
+      getRequest('logout/');
+      localStorage.removeItem("token");
+      localStorage.clear();
+      this.$router.push("/");
+    }
+
+    /* Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/ */
     // logout() {
     //   const token = localStorage.getItem("token");
     //   axios
@@ -80,13 +89,6 @@ export default {
     //   localStorage.clear();
     //   this.$router.push("/");
     // }, // logout
-
-    logout(){
-      getRequest('logout/');
-      localStorage.removeItem("token");
-      localStorage.clear();
-      this.$router.push("/");
-    }
 
   }, // methods
 }; // export default
