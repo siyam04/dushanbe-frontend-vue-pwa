@@ -1,29 +1,30 @@
 importScripts("/precache-manifest.0678a5734aefb3e51ad0bc239d907b89.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
-/* testing */
-const bgSyncPlugin = new workbox.backgroundSync.Plugin('queueExample', {
-    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
+
+workbox.setConfig({
+    debug: true
+});
+
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+
+
+/* Testing */
+
+/* workbox-background-sync */
+const bgSyncPlugin = new workbox.backgroundSync.BackgroundSy('queueExample', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 
 workbox.routing.registerRoute(
     'https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/',
-    workbox.strategies.networkOnly({
+    new workbox.strategies.NetworkOnly({
         plugins: [bgSyncPlugin]
     }),
     'POST'
 );
 
-/* my codes */
-
-// self.__precacheManifest = [].concat(self.__precacheManifest || []);
-//
-// workbox.setConfig({
-//     debug: true
-// });
-//
-// workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
-
-
+/* Testing END */
 
 
 // /* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
