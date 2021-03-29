@@ -1,16 +1,17 @@
 importScripts("/precache-manifest.ba267318bc34736deff9f9b7d59c6bfa.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* testing */
-const manifest = self.__WB_MANIFEST;
-workbox.precaching.precacheAndRoute(
-  manifest.concat([
-    {
-      url: "/api/work-submissions/",
-      revision: "1",
-    },
-  ])
-);
+const bgSyncPlugin = new workbox.backgroundSync.Plugin('queueExample', {
+    maxRetentionTime: 24 * 60 // Retry for max of 24 Hours
+});
 
+workbox.routing.registerRoute(
+    'https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/',
+    workbox.strategies.networkOnly({
+        plugins: [bgSyncPlugin]
+    }),
+    'POST'
+);
 
 /* my codes */
 
