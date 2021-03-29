@@ -71,7 +71,7 @@ const matchCallback = ({ request }) => request.mode === 'navigate';
 
 workbox.routing.registerRoute(
     matchCallback,
-    new NetworkFirst({
+    new workbox.strategies.NetworkFirst({
         // networkTimeoutSeconds,
         cacheName,
         plugins: [
