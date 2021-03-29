@@ -16,21 +16,22 @@
           <!-- Work Details -->
           <li class="nav-item">
             <router-link
-              class="nav-link"
-              id="work_details_button"
-              :to="{ name: 'WorkSubmissionList' }"
-              >View</router-link
+                class="nav-link"
+                id="work_details_button"
+                :to="{ name: 'WorkSubmissionList' }"
+            >View
+            </router-link
             >
           </li>
 
           <!-- Logout -->
           <li class="nav-item">
             <a
-              href=""
-              class="nav-link logout-btn"
-              id="logout_button"
-              @click="logout"
-              >Logout</a
+                href=""
+                class="nav-link logout-btn"
+                id="logout_button"
+                @click="logout"
+            >Logout</a
             >
           </li>
         </ul>
@@ -47,6 +48,7 @@
 import axios from "axios";
 import {getRequest} from "@/plugins/requestHandler";
 
+
 export default {
   name: "Navbar",
 
@@ -56,8 +58,8 @@ export default {
       username: localStorage.getItem("username"),
       first_name: localStorage.getItem("first_name"),
       last_name: localStorage.getItem("last_name"),
-    }; // return
-  }, // data
+    }
+  },
 
   methods: {
 
@@ -71,7 +73,7 @@ export default {
 
     /* Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/ */
     // logout() {
-    //   const token = localStorage.getItem("token");
+    //   const token = localStorage.getItem("token")
     //   axios
     //     .get(
     //       "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/logout/",
@@ -80,18 +82,18 @@ export default {
     //       }
     //     )
     //     .then((res) => {
-    //       console.log(res.data);
+    //       console.log(res.data)
     //     })
     //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    //   localStorage.removeItem("token");
-    //   localStorage.clear();
-    //   this.$router.push("/");
+    //       console.error(error)
+    //     })
+    //   localStorage.removeItem("token")
+    //   localStorage.clear()
+    //   this.$router.push("/")
     // }, // logout
-
   }, // methods
 }; // export default
+
 </script>
 
 <!-- css section -->

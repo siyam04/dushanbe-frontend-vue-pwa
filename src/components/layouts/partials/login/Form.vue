@@ -93,6 +93,7 @@
 import axios from "axios"
 import * as Swal from "sweetalert2"
 
+
 export default {
   name: "Form",
 
@@ -105,11 +106,11 @@ export default {
         username: null,
         password: null,
       },
-    }
+
+    } // return
   }, // data
 
   methods: {
-
     /* Login (POST): https://dushanbe-backend-apis.herokuapp.com/api/login/ */
     loginSubmit() {
       axios
@@ -141,8 +142,8 @@ export default {
             }) // swal
 
             return error.status(400).json({error: error})
-            // console.log(error)
           }) // catch
+
     }, // loginSubmit
   }, // methods
 } // export default
