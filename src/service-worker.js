@@ -1,10 +1,6 @@
 /* testing */
-
-import { precacheAndRoute } from "workbox-precaching";
-
-
 const manifest = self.__WB_MANIFEST;
-precacheAndRoute(
+workbox.precaching.precacheAndRoute(
   manifest.concat([
     {
       url: "/api/work-submissions/",
@@ -14,16 +10,18 @@ precacheAndRoute(
 );
 
 
-self.__precacheManifest = [].concat(self.__precacheManifest || []);
+/* my codes */
 
-workbox.setConfig({
-    debug: true
-});
+// self.__precacheManifest = [].concat(self.__precacheManifest || []);
+//
+// workbox.setConfig({
+//     debug: true
+// });
+//
+// workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 
-/* my APIs */
 
 // /* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
 // workbox.routing.registerRoute(
