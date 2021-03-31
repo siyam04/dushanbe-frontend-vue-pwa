@@ -286,32 +286,28 @@ export default {
   data() {
     return {
 
-      // IDB
-      db: null,
-      reqs: [],
-
-      // GET API data
+      /* GET API data */
       all_bills: [],
       all_types: [],
       all_materials: [],
 
-      // filtered data
+      /* filtered data */
       filtered_types_by_bill_id: [],
       filtered_materials_by_type_id: [],
 
-      // materials populated data
+      /* materials populated data */
       serial_no: null,
       unit: null,
       quantity: null,
 
-      // POST API data
+      /* POST API data */
       bill: null,
       type: null,
       material: null,
       submission_date: null,
       work_progress: null,
 
-      // field error validation data
+      /* field error validation data */
       field_validation_data: {
         bill: null,
         type: null,
@@ -320,22 +316,10 @@ export default {
         work_progress: null,
       },
 
-      // localStorage data
+      /* localStorage data */
       username: localStorage.getItem("username"),
 
     }
-  },
-
-  async created() {
-    // IDB
-    this.db = await this.getDB()
-    this.ready = true
-
-    // regular
-    this.getAllData()
-    this.todayDate()
-    this.switchTypeField()
-    this.switchMaterialField()
   },
 
   /* methods */
@@ -423,40 +407,8 @@ export default {
       this.submission_date = new Date().toISOString().substr(0, 10)
     },
 
-    /* IDB */
-    async getDB() {
-      return new Promise((resolve, reject) => {
-        let request = indexedDB.open(DB_NAME);
-
-        // on upgrade needed
-        request.onupgradeneeded = (e) => {
-          let db = e.target.result;
-
-          // create database table
-          db.createObjectStore("post_reqs", {
-            autoIncrement: true,
-            keyPath: "id",
-          });
-
-          // alert(`Upgrade is called database name: ${store.result}`);
-        };
-
-        // on success
-        request.onsuccess = (e) => {
-          resolve(e.target.result);
-          // alert(`Success is called database name: ${e.target.result.name}`);
-        };
-
-        // on error
-        request.onerror = (e) => {
-          reject("Error");
-          alert(`Error: ${e.target.error} was found!`);
-        };
-      });
-    },
-
     /* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
-    async submitBillSubmissionForm() {
+    submitBillSubmissionForm() {
       const token = localStorage.getItem("token")
 
       const headerConfig = {
@@ -470,9 +422,6 @@ export default {
         submission_date: this.submission_date,
         work_progress: this.work_progress,
       }
-
-      // IDB
-      await this.addPostToDB(bodyParameters)
 
       axios
           .post(
@@ -496,27 +445,6 @@ export default {
           })
     },
 
-    /* IDB */
-    async addPostToDB(obj) {
-      return new Promise((resolve, reject) => {
-        let tx = this.db.transaction(["post_reqs"], "readwrite");
-
-        tx.oncomplete = () => {
-          resolve();
-        };
-
-        tx.onerror = () => {
-          reject("Error");
-        };
-
-        // get table name from indexedDB
-        let store = tx.objectStore("post_reqs");
-
-        // insert data inside books table
-        store.add(obj);
-      });
-    },
-
     /* Deactivate type field if no dependant API data */
     switchTypeField() {
       if (this.filtered_types_by_bill_id.length > 0) {
@@ -535,6 +463,13 @@ export default {
       }
     },
 
+  },
+
+  created() {
+    this.getAllData()
+    this.todayDate()
+    this.switchTypeField()
+    this.switchMaterialField()
   },
 
 }// export default

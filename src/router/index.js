@@ -1,5 +1,5 @@
 /* vue-router */
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 /* login component */
 import Login from "@/views/Login";
@@ -9,8 +9,11 @@ import WorkSubmissionCreate from "@/views/WorkSubmissionCreate";
 import WorkSubmissionList from "@/components/layouts/partials/work_submission_create/WorkSubmissionList";
 
 /* router middlewares */
-// import router_middlewares from "@/middlewares/middlewares";
+import router_middlewares from "@/middlewares/middlewares";
 
+
+/* check connectivity first */
+router_middlewares.app_mode()
 
 /* custom routes */
 const routes = [
@@ -32,14 +35,15 @@ const routes = [
         path: "/work-submission-list",
         name: "WorkSubmissionList",
         component: WorkSubmissionList,
-        // beforeEnter: guardMyRoute,
+        // beforeEnter: router_middlewares.app_mode(),
+        // beforeEnter: router_middlewares.guardRoute(),
     },
 
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 export default router

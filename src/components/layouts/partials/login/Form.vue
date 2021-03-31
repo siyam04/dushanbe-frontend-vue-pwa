@@ -145,8 +145,11 @@ export default {
           }) // catch
 
     }, // loginSubmit
+
   }, // methods
+
 } // export default
+
 </script>
 
 

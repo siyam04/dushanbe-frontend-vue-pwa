@@ -13,10 +13,11 @@
 <script>
 import Form from "../components/layouts/partials/login/Form";
 
+
 export default {
   name: "Login",
   components: { Form },
-}; // export default
+};
 </script>
 
 <!-- css section -->

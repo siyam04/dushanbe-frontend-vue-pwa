@@ -18,4 +18,3 @@ const router_middlewares = {
 
 /* exporting methods */
 export default router_middlewares
-
