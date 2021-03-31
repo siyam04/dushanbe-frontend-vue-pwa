@@ -68,7 +68,8 @@ workbox.routing.registerRoute(
 /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
 workbox.routing.registerRoute(
     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-    new workbox.strategies.NetworkFirst({
+    // new workbox.strategies.NetworkFirst({
+    new workbox.strategies.CacheFirst({
         cacheName: "work-submissions",
         plugins: [
             new workbox.expiration.Plugin({
@@ -78,3 +79,4 @@ workbox.routing.registerRoute(
         method: "GET"
     })
 );
+
