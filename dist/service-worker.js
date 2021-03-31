@@ -81,18 +81,6 @@ workbox.routing.registerRoute(
     })
 );
 
-/* Work Submission List By User's ID (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/?user_id=1 */
-workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/" + "?user_id=" + parseInt(localStorage.getItem("id")),
-    new workbox.strategies.NetworkFirst({
-        cacheName: "work-submissions-by-userID",
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 30 * 60 // 10 minutes
-            })
-        ],
-        method: "GET",
-    })
-);
+
 
 
