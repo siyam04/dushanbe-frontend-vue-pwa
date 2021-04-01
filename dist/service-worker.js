@@ -2,7 +2,7 @@ importScripts("/precache-manifest.5d5afa37ee4d289c5e4119288fd025fb.js", "https:/
 
 //////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+// workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(
