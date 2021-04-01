@@ -74,7 +74,7 @@ workbox.routing.registerRoute(
 /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
 workbox.routing.registerRoute(
     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-    new workbox.strategies.StaleWhileRevalidate({
+    new workbox.strategies.NetworkOnly({
         cacheName: "work-submissions-list",
         plugins: [
             new workbox.expiration.Plugin({
