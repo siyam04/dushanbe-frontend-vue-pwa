@@ -434,7 +434,7 @@ export default {
               icon: "success",
               text: "Work Submitted Successfully!",
             }).then((result) => {
-              this.$router.go()
+              // this.$router.go()
               // this.$router.push("work-submission-list")
               console.log(result)
             });

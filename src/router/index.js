@@ -13,7 +13,7 @@ import router_middlewares from "@/middlewares/middlewares";
 
 
 /* check connectivity first */
-router_middlewares.app_mode()
+// router_middlewares.app_mode()
 
 /* custom routes */
 const routes = [
