@@ -1,9 +1,9 @@
 importScripts("/precache-manifest.5d5afa37ee4d289c5e4119288fd025fb.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 //////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////
-// self.__precacheManifest = [].concat(self.__precacheManifest || []);
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
-// workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(
     'https://dushanbe-backend-apis.herokuapp.com/api/bills/',

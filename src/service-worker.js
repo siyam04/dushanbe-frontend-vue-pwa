@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////// TEST /////////////////////////////////////////////////
-// self.__precacheManifest = [].concat(self.__precacheManifest || []);
+self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
-// workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(
     'https://dushanbe-backend-apis.herokuapp.com/api/bills/',
