@@ -7,7 +7,10 @@ export default {
   name: "App",
   components: {},
 };
-
 </script>
 
-<style></style>
+<style>
+body {
+  background: #fafafa !important;
+}
+</style>

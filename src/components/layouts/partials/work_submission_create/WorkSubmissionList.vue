@@ -1,15 +1,15 @@
 <!-- template section -->
 <template>
   <!-- main row -->
-  <div class="container py-4">
-    <div class="main-header card p-3">
+  <div class="main-header bg-white shadow-sm px-3 py-2 mb-4">
+    <div class="container">
       <div
-          class="header-box bg-white d-flex align-items-center justify-content-between"
+        class="header-box bg-white d-flex align-items-center justify-content-between"
       >
         <div class="header d-flex align-items-center">
           <img
-              src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
-              alt="Dushanbe"
+            src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
+            alt="Dushanbe"
           />
           <h1 class="mb-0">Works List</h1>
         </div>
@@ -22,30 +22,44 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="container ">
+    <!-- Start Data Loader -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="d-flex align-items-center">
+        <div
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></div>
+        <h6 class="ml-2 mb-0">Loading...</h6>
+      </div>
+    </div>
+    <!-- End Data Loader -->
 
     <div class="accordion mt-4" id="accordionExample">
       <div
-          class="card"
-          v-for="(work, index) in all_work_submissions.slice(
+        class="card"
+        v-for="(work, index) in all_work_submissions.slice(
           pageStart,
           pageStart + itemPerPage
         )"
-          :key="work.id"
+        :key="work.id"
       >
         <div class="card-header" :id="'heading_' + work.id">
           <h2 class="mb-0">
             <button
-                class="btn btn-link"
-                type="button"
-                data-toggle="collapse"
-                :data-target="'#collapse_' + work.id"
-                :aria-expanded="index < 1 ? true : false"
-                :aria-controls="'collapse_' + work.id"
+              class="btn btn-link"
+              type="button"
+              data-toggle="collapse"
+              :data-target="'#collapse_' + work.id"
+              :aria-expanded="index < 1 ? true : false"
+              :aria-controls="'collapse_' + work.id"
             >
               <span>{{
-                  // index + 1 + ". " + work.bill.short_bill_name + "..."
-                  work.id + ". " + work.bill.bill_name + "..."
-                }}</span>
+                // index + 1 + ". " + work.bill.short_bill_name + "..."
+                work.id + ". " + work.bill.bill_name + "..."
+              }}</span>
 
               <span>{{ work.submission_date }}</span>
             </button>
@@ -53,10 +67,10 @@
         </div>
 
         <div
-            :id="'collapse_' + work.id"
-            :class="index < 1 ? 'collapse show' : 'collapse'"
-            :aria-labelledby="'heading_' + work.id"
-            data-parent="#accordionExample"
+          :id="'collapse_' + work.id"
+          :class="index < 1 ? 'collapse show' : 'collapse'"
+          :aria-labelledby="'heading_' + work.id"
+          data-parent="#accordionExample"
         >
           <div class="card-body border-top">
             <div class="outer-box type-and-user">
@@ -115,8 +129,8 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li
-            :class="['page-item ', currentPage === 1 ? 'disabled' : '']"
-            @click.prevent="setPage(currentPage - 1)"
+          :class="['page-item ', currentPage === 1 ? 'disabled' : '']"
+          @click.prevent="setPage(currentPage - 1)"
         >
           <a class="page-link" href="#" tabindex="-1">Previous</a>
         </li>
@@ -129,8 +143,8 @@
           <a class="page-link" href="#">{{ pageNo }}</a>
         </li> -->
         <li
-            :class="['page-item ', currentPage === totalPage ? 'disabled' : '']"
-            @click.prevent="setPage(currentPage + 1)"
+          :class="['page-item ', currentPage === totalPage ? 'disabled' : '']"
+          @click.prevent="setPage(currentPage + 1)"
         >
           <a class="page-link" href="#">Next</a>
         </li>
@@ -144,8 +158,7 @@
 <!-- script section -->
 <script>
 import axios from "axios";
-import {getRequest} from "@/plugins/requestHandler";
-
+import { getRequest } from "@/plugins/requestHandler";
 
 export default {
   name: "WorkSubmissionList",
@@ -156,59 +169,59 @@ export default {
       currentPage: 1,
       itemPerPage: 5,
       isLoading: true,
-    }
+    };
   },
   methods: {
-
     /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
-      const token = localStorage.getItem("token")
-      const user_id = parseInt(localStorage.getItem("id"))
+      const token = localStorage.getItem("token");
+      const user_id = parseInt(localStorage.getItem("id"));
       axios
-          .get(this.url, {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-            params: {
-              user_id,
-              page: this.$route.query.page, // for pagination
-            },
-          })
-          .then((response) => {
-            this.all_work_submissions = response.data.results
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+        .get(this.url, {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+          params: {
+            user_id,
+            page: this.$route.query.page, // for pagination
+          },
+        })
+        .then((response) => {
+          this.all_work_submissions = response.data.results;
+          this.isLoading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    setPage: function (pageNumber) {
+    setPage: function(pageNumber) {
       if (pageNumber <= 0 || pageNumber > this.totalPage) {
-        return
+        return;
       }
-      this.currentPage = pageNumber
+      this.currentPage = pageNumber;
       // console.log("Current Page: ", this.currentPage)
     },
   },
 
   created() {
-    this.loadWorkSubmission()
+    this.loadWorkSubmission();
   },
 
   computed: {
     // show all  posts
     displayedPosts() {
-      return this.all_work_submissions
+      return this.all_work_submissions;
     },
     //
-    pageStart: function () {
-      return (this.currentPage - 1) * this.itemPerPage
+    pageStart: function() {
+      return (this.currentPage - 1) * this.itemPerPage;
     },
     // show total pages
-    totalPage: function () {
-      return Math.ceil(this.all_work_submissions.length / this.itemPerPage)
+    totalPage: function() {
+      return Math.ceil(this.all_work_submissions.length / this.itemPerPage);
     },
   },
-} // export default
+}; // export default
 </script>
 
 <!-- css section -->
@@ -217,14 +230,25 @@ export default {
   /* text-align: center; */
 }
 
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 120px);
+}
+
+.spinner-border {
+  color: #0061a7;
+}
+
 .header img {
-  width: 40px;
+  width: 36px;
   height: auto;
   margin-right: 15px;
 }
 
 .header h1 {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .td_action button {
