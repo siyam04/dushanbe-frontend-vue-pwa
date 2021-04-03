@@ -1,5 +1,10 @@
 # dushanbe-frontend-vue-pwa
 
+## Live
+```
+https://dushanbe-frontend-vue-pwa.herokuapp.com/
+```
+
 ## Project setup
 ```
 npm install

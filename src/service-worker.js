@@ -82,6 +82,7 @@ workbox.routing.registerRoute(
             })
         ],
         method: "GET",
+        param: {'user_id': parseInt(localStorage.getItem("id"))}
     })
 );
 

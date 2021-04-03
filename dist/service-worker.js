@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.560e266e0b7fa2904b74e40eaf246745.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.3332fa6484cfa0ba61251e0a716a0ead.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 // import { CacheOnly, CacheFirst, NetworkOnly, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
@@ -84,6 +84,7 @@ workbox.routing.registerRoute(
             })
         ],
         method: "GET",
+        param: {'user_id': parseInt(localStorage.getItem("id"))}
     })
 );
 
