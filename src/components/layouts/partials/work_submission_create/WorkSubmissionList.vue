@@ -1,7 +1,7 @@
 <!-- template section -->
 <template>
   <!-- main row -->
-  <div class="main-header bg-white shadow-sm px-3 py-2 mb-4">
+  <div class="main-header bg-white shadow-sm px-3 py-2">
     <div class="container">
       <div
         class="header-box bg-white d-flex align-items-center justify-content-between"
@@ -23,6 +23,9 @@
       </div>
     </div>
   </div>
+
+  <CheckOnlineOrOffline class="mb-4" />
+
   <div class="container ">
     <!-- Start Data Loader -->
     <div v-if="isLoading" class="loading-container">
@@ -159,8 +162,10 @@
 <script>
 import axios from "axios";
 import { getRequest } from "@/plugins/requestHandler";
+import CheckOnlineOrOffline from "../onlineStatus/CheckOnlineOrOffline";
 
 export default {
+  components: { CheckOnlineOrOffline },
   name: "WorkSubmissionList",
   data() {
     return {
@@ -169,6 +174,7 @@ export default {
       currentPage: 1,
       itemPerPage: 5,
       isLoading: true,
+      isOnline: false,
     };
   },
   methods: {

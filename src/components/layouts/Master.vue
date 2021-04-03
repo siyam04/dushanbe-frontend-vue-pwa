@@ -4,6 +4,10 @@
   <div>
     <!-- Navbar -->
     <Navbar />
+
+    <!-- Check online or offline mode -->
+    <CheckOnlineOrOffline />
+
     <!--contents slot-->
     <slot name="contents"></slot>
   </div>
@@ -13,10 +17,11 @@
 <!-- script section -->
 <script>
 import Navbar from "./partials/Navbar";
+import CheckOnlineOrOffline from "./partials/onlineStatus/CheckOnlineOrOffline";
 
 export default {
   name: "Master.vue",
-  components: { Navbar },
+  components: { Navbar, CheckOnlineOrOffline },
 };
 </script>
 

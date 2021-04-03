@@ -1,15 +1,13 @@
 /* vue-router */
-import {createRouter, createWebHistory} from 'vue-router'
-
+import WorkSubmissionList from "@/components/layouts/partials/work_submission_create/WorkSubmissionList";
 /* login component */
 import Login from "@/views/Login";
-
 /* work-submission components */
 import WorkSubmissionCreate from "@/views/WorkSubmissionCreate";
-import WorkSubmissionList from "@/components/layouts/partials/work_submission_create/WorkSubmissionList";
+import { createRouter, createWebHistory } from 'vue-router';
 
-/* router middlewares */
-import router_middlewares from "@/middlewares/middlewares";
+
+
 
 
 /* check connectivity first */
