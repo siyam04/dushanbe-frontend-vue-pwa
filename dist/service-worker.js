@@ -40,7 +40,7 @@ workbox.routing.registerRoute(
                 maxAgeSeconds: 30 * 60 // 30 minutes
             })
         ],
-        method: "GET"
+        method: "GET",
     })
 );
 
@@ -73,20 +73,67 @@ workbox.routing.registerRoute(
     })
 );
 
-/* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+// /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+// workbox.routing.registerRoute(
+//     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+//     new workbox.strategies.NetworkFirst({
+//         cacheName: "work-submissions-list",
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxAgeSeconds: 30 * 60 // 30 minutes
+//             })
+//         ],
+//         method: "GET",
+//         // params: {
+//         //     'user_id': parseInt(localStorage.getItem("id"))
+//         // },
+//         // user_id: request.url.searchParams.get('user_id')
+//     })
+// );
+
+
+/////////////////////////////////////////////////////// Callback Example/////////////////////////////////////////////////////
+
+// const matchFunction = ({url, event}) => {
+//     // Return true if the route should match
+//     u
+//     return false;
+// };
+//
+// workbox.routing.registerRoute(
+//     matchFunction,
+//     handler
+// );
+
 workbox.routing.registerRoute(
     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-    new workbox.strategies.NetworkOnly({
-        cacheName: "work-submissions-list",
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxAgeSeconds: 30 * 60 // 30 minutes
-            })
-        ],
-        method: "GET",
-    })
+    ({url, event}) => {
+        return caches.open(`${prefix}-${runtime}-${suffix}`).then((cache) => {
+            const customRequest = `${url.origin}${url.pathname}`;
+            return cache.match(customRequest).then((cacheRes) => {
+                if (cacheRes) {
+                    return cacheRes;
+                }
+                return fetch(event.request).then((fetchRes) => {
+                    cache.put(customRequest, fetchRes.clone());
+                    return fetchRes;
+                });
+            });
+        });
+    }
 );
 
+/////////////////////////////////////////////////////// LOG Alerts /////////////////////////////////////////////////////
 
+// The most verbose - displays all logs.
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
+// Shows logs, warnings and errors.
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.log);
+// Show warnings and errors.
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.warn);
+// Show *just* errors
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.error);
+// Silence all of the Workbox logs.
+workbox.core.setLogLevel(workbox.core.LOG_LEVELS.silent);
 
 
