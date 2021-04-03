@@ -73,23 +73,23 @@ workbox.routing.registerRoute(
     })
 );
 
-// /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
-// workbox.routing.registerRoute(
-//     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-//     new workbox.strategies.NetworkFirst({
-//         cacheName: "work-submissions-list",
-//         plugins: [
-//             new workbox.expiration.Plugin({
-//                 maxAgeSeconds: 30 * 60 // 30 minutes
-//             })
-//         ],
-//         method: "GET",
-//         // params: {
-//         //     'user_id': parseInt(localStorage.getItem("id"))
-//         // },
-//         // user_id: request.url.searchParams.get('user_id')
-//     })
-// );
+/* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+workbox.routing.registerRoute(
+    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+    new workbox.strategies.StaleWhileRevalidate({
+        cacheName: "work-submissions-list",
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 30 * 60 // 30 minutes
+            })
+        ],
+        method: "GET",
+        params: {
+            'user_id': parseInt(localStorage.getItem("id"))
+        },
+        // user_id: request.url.searchParams.get('user_id')
+    })
+);
 
 
 /////////////////////////////////////////////////////// Callback Example /////////////////////////////////////////////////////
@@ -105,23 +105,23 @@ workbox.routing.registerRoute(
 //     handler
 // );
 
-workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-    ({url, event}) => {
-        return caches.open(`${prefix}-${runtime}-${suffix}`).then((cache) => {
-            const customRequest = `${url.origin}${url.pathname}`;
-            return cache.match(customRequest).then((cacheRes) => {
-                if (cacheRes) {
-                    return cacheRes;
-                }
-                return fetch(event.request).then((fetchRes) => {
-                    cache.put(customRequest, fetchRes.clone());
-                    return fetchRes;
-                });
-            });
-        });
-    }
-);
+// workbox.routing.registerRoute(
+//     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+//     ({url, event}) => {
+//         return caches.open(`${prefix}-${runtime}-${suffix}`).then((cache) => {
+//             const customRequest = `${url.origin}${url.pathname}`;
+//             return cache.match(customRequest).then((cacheRes) => {
+//                 if (cacheRes) {
+//                     return cacheRes;
+//                 }
+//                 return fetch(event.request).then((fetchRes) => {
+//                     cache.put(customRequest, fetchRes.clone());
+//                     return fetchRes;
+//                 });
+//             });
+//         });
+//     }
+// );
 
 
 
