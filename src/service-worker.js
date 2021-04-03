@@ -73,7 +73,7 @@ workbox.routing.registerRoute(
 
 /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
 workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/?user_id=" + parseInt(localStorage.getItem("id")),
     new workbox.strategies.NetworkOnly({
         cacheName: "work-submissions-list",
         plugins: [
@@ -82,7 +82,6 @@ workbox.routing.registerRoute(
             })
         ],
         method: "GET",
-        param: {'user_id': parseInt(localStorage.getItem("id"))}
     })
 );
 
