@@ -92,7 +92,7 @@ workbox.routing.registerRoute(
 // );
 
 
-/////////////////////////////////////////////////////// Callback Example/////////////////////////////////////////////////////
+/////////////////////////////////////////////////////// Callback Example /////////////////////////////////////////////////////
 
 // const matchFunction = ({url, event}) => {
 //     // Return true if the route should match
@@ -123,17 +123,6 @@ workbox.routing.registerRoute(
     }
 );
 
-/////////////////////////////////////////////////////// LOG Alerts /////////////////////////////////////////////////////
 
-// The most verbose - displays all logs.
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
-// Shows logs, warnings and errors.
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.log);
-// Show warnings and errors.
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.warn);
-// Show *just* errors
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.error);
-// Silence all of the Workbox logs.
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.silent);
 
 
