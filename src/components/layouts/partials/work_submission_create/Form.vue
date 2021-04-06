@@ -5,7 +5,7 @@
     <!-- main div -->
     <div class="container">
       <!-- form start -->
-      <form name="bill_form" class="form rounded bg-white" @submit.prevent="submitBillSubmissionForm">
+      <form name="bill_form" id="form_reset" class="form rounded bg-white" @submit.prevent="submitBillSubmissionForm">
         <!-- logo & heading -->
         <div class="card-header bg-white">
           <div class="header d-flex align-items-center">
@@ -318,7 +318,6 @@ export default {
 
       /* localStorage data */
       username: localStorage.getItem("username"),
-
     }
   },
 
@@ -443,6 +442,18 @@ export default {
           .catch((error) => {
             this.field_validation_data = error.response.data
           })
+
+      // document.getElementById("form_reset").reset();
+
+      this.bill = null
+      this.type = null
+      // this.material.serial_no = null
+      // this.material.unit = null
+      // this.material.quantity = null
+      this.material = null
+      this.submission_date = null
+      this.work_progress = null
+
     },
 
     /* Deactivate type field if no dependant API data */

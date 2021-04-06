@@ -41,11 +41,11 @@
                     v-model="username"
                     :class="{'is-invalid': login_validation_data && login_validation_data.username}"/>
 
-                 <!--error handling-->
-              <div :class="{'invalid-feedback':login_validation_data && login_validation_data.username}"
-                   v-if="login_validation_data && login_validation_data.username">
-                  {{login_validation_data.username[0] }}
-              </div>
+                <!--error handling-->
+                <div :class="{'invalid-feedback':login_validation_data && login_validation_data.username}"
+                     v-if="login_validation_data && login_validation_data.username">
+                  {{ login_validation_data.username[0] }}
+                </div>
               </div>
               <!-- username (email) field end -->
 
@@ -60,9 +60,9 @@
                     :class="{'is-invalid': login_validation_data && login_validation_data.password}"/>
 
                 <div :class="{'invalid-feedback':login_validation_data && login_validation_data.password}"
-                   v-if="login_validation_data && login_validation_data.password">
-                  {{login_validation_data.password[0] }}
-              </div>
+                     v-if="login_validation_data && login_validation_data.password">
+                  {{ login_validation_data.password[0] }}
+                </div>
               </div>
               <!-- password field end -->
 
@@ -132,15 +132,20 @@ export default {
             // go to this route after login
             // window.location.href = "/work-submission-create"
             this.$router.push("work-submission-create")
-
-          }) // then
-          .catch((error) => {
+          })
+          .then(response => {
+            Swal.fire({
+              icon: "success",
+              text: "Login Successful!",
+            })
+            // console.log(response)
+          })
+          .catch(error => {
             this.login_validation_data = error.response.data
             Swal.fire({
               icon: "error",
               text: "Provided Credentials Are Not Correct! Please Try Again...",
-            }) // swal
-
+            })
             return error.status(400).json({error: error})
           }) // catch
 
@@ -177,8 +182,8 @@ body {
 .form-container {
   position: absolute;
   top: 50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 600px;
   /*margin: 50px auto;*/
   padding: 100px 80px;
