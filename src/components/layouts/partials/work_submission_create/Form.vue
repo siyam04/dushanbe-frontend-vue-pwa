@@ -443,14 +443,41 @@ export default {
         .then((response) => {
           this.isDataSubmit = false;
 
+          // Swal.fire({
+          //   icon: "success",
+          //   text: "Work Submitted Successfully!",
+          // }).then((result) => {
+          //   // this.$router.go()
+          //   // this.$router.push("work-submission-list")
+          //   console.log(result);
+          // });
+
           Swal.fire({
             icon: "success",
-            text: "Work Submitted Successfully!",
-          }).then((result) => {
-            // this.$router.go()
-            // this.$router.push("work-submission-list")
-            console.log(result);
+            // text: "Work Submitted Successfully!",
+            html:
+              "Work Submitted Successfully!" +
+              "<br><br>" +
+              '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+              "Add Another" +
+              "</button>" +
+              '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+              "View Lists" +
+              "</button>",
+            showCancelButton: false,
+            showConfirmButton: false,
           });
+
+          $(".SwalBtn1").on("click", function() {
+            window.history.go();
+            console.log("SwalBtn1");
+          });
+
+          $(".SwalBtn2").on("click", function() {
+            console.log("SwalBtn2");
+            window.location.assign("work-submission-list");
+          });
+
           console.log(response);
         })
         .catch((error) => {
