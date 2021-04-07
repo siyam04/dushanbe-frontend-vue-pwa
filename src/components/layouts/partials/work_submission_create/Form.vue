@@ -26,6 +26,10 @@
 
         <!-- card body -->
         <div class="card-body">
+          <!-- array of strings or numbers -->
+          <!-- <h1>hello</h1>
+          <v-select :options="['Canada', 'United States']"></v-select> -->
+
           <!-- Bill-->
           <div class="form-group">
             <label>Bill</label>
@@ -258,8 +262,10 @@
             <button
               @submit.prevent="submitBillSubmissionForm"
               id="submit_button"
-              :class="['btn btn-primary mt-1', isDataSubmit ? 'disabled' : '']"
+              class=" btn btn-primary mt-1"
+              :disabled="isDataSubmit ? true : false"
             >
+              <!-- :class="['btn btn-primary mt-1', isDataSubmit ? 'disabled' : '']" -->
               {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
           </div>
@@ -498,6 +504,10 @@ body {
   width: 100%;
   height: 100%;
   background-color: #fafafa;
+}
+
+.btn:disabled {
+  cursor: no-drop;
 }
 
 .shadow-sm {
