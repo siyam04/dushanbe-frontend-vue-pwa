@@ -265,7 +265,6 @@
               class=" btn btn-primary mt-1"
               :disabled="isDataSubmit ? true : false"
             >
-              <!-- :class="['btn btn-primary mt-1', isDataSubmit ? 'disabled' : '']" -->
               {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
           </div>
