@@ -76,4 +76,8 @@ export default {
 .navbar a.nav-link {
   font-size: 15px;
 }
+
+.navbar li:first-child {
+  margin-right: 10px;
+}
 </style>

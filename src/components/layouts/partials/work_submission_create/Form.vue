@@ -26,6 +26,10 @@
 
         <!-- card body -->
         <div class="card-body">
+          <!-- array of strings or numbers -->
+          <!-- <h1>hello</h1>
+          <v-select :options="['Canada', 'United States']"></v-select> -->
+
           <!-- Bill-->
           <div class="form-group">
             <label>Bill</label>
@@ -258,7 +262,8 @@
             <button
               @submit.prevent="submitBillSubmissionForm"
               id="submit_button"
-              :class="['btn btn-primary mt-1', isDataSubmit ? 'disabled' : '']"
+              class=" btn btn-primary mt-1"
+              :disabled="isDataSubmit ? true : false"
             >
               {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
@@ -438,14 +443,41 @@ export default {
         .then((response) => {
           this.isDataSubmit = false;
 
+          // Swal.fire({
+          //   icon: "success",
+          //   text: "Work Submitted Successfully!",
+          // }).then((result) => {
+          //   // this.$router.go()
+          //   // this.$router.push("work-submission-list")
+          //   console.log(result);
+          // });
+
           Swal.fire({
             icon: "success",
-            text: "Work Submitted Successfully!",
-          }).then((result) => {
-            // this.$router.go()
-            // this.$router.push("work-submission-list")
-            console.log(result);
+            // text: "Work Submitted Successfully!",
+            html:
+              "Work Submitted Successfully!" +
+              "<br><br>" +
+              '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+              "Add Another" +
+              "</button>" +
+              '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+              "View Lists" +
+              "</button>",
+            showCancelButton: false,
+            showConfirmButton: false,
           });
+
+          $(".SwalBtn1").on("click", function() {
+            window.history.go();
+            console.log("SwalBtn1");
+          });
+
+          $(".SwalBtn2").on("click", function() {
+            console.log("SwalBtn2");
+            window.location.assign("work-submission-list");
+          });
+
           console.log(response);
         })
         .catch((error) => {
@@ -498,6 +530,10 @@ body {
   width: 100%;
   height: 100%;
   background-color: #fafafa;
+}
+
+.btn:disabled {
+  cursor: no-drop;
 }
 
 .shadow-sm {

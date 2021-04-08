@@ -86,7 +86,8 @@
               <button
                 @submit.prevent="loginSubmit"
                 type="submit"
-                :class="['btn', isDataSubmit ? 'disabled' : '']"
+                class=" btn btn-primary mt-1"
+                :disabled="isDataSubmit ? true : false"
               >
                 {{ isDataSubmit ? "Loading..." : "LOGIN" }}
               </button>
@@ -131,6 +132,7 @@ export default {
     /* Login (POST): https://dushanbe-backend-apis.herokuapp.com/api/login/ */
     loginSubmit() {
       this.isDataSubmit = true;
+      // console.log("clicked");
 
       axios
         .post("https://dushanbe-backend-apis.herokuapp.com/api/login/", {
@@ -284,7 +286,7 @@ h3 {
 }
 
 .btn:hover {
-  opacity: 1;
+  /* opacity: 1; */
 }
 
 .forgot {
