@@ -44,8 +44,8 @@
       <div
           class="card"
           v-for="(work, index) in all_work_submissions.slice(
-          pageStart,
-          pageStart + itemPerPage
+          // pageStart,
+          // pageStart + itemPerPage
         )"
           :key="work.id"
       >
@@ -129,31 +129,56 @@
     </div>
 
     <!-- Start Pagination -->
-    <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li
-            :class="['page-item ', currentPage === 1 ? 'disabled' : '']"
-            @click.prevent="setPage(currentPage - 1)"
-        >
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-        <!-- <li
-          v-for="pageNo in totalPage"
-          :key="pageNo"
-          :class="['page-item', currentPage == pageNo ? 'active' : '']"
-          @click.prevent="setPage(pageNo)"
-        >
-          <a class="page-link" href="#">{{ pageNo }}</a>
-        </li> -->
-        <li
-            :class="['page-item ', currentPage === totalPage ? 'disabled' : '']"
-            @click.prevent="setPage(currentPage + 1)"
-        >
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+    <!--    <nav aria-label="Page navigation example">-->
+    <!--      <ul class="pagination">-->
+    <!--        <li-->
+    <!--            :class="['page-item ', currentPage === 1 ? 'disabled' : '']"-->
+    <!--            @click.prevent="setPage(currentPage - 1)"-->
+    <!--        >-->
+    <!--          <a class="page-link" href="#" tabindex="-1">Previous</a>-->
+    <!--        </li>-->
+    <!--        &lt;!&ndash; <li-->
+    <!--          v-for="pageNo in totalPage"-->
+    <!--          :key="pageNo"-->
+    <!--          :class="['page-item', currentPage == pageNo ? 'active' : '']"-->
+    <!--          @click.prevent="setPage(pageNo)"-->
+    <!--        >-->
+    <!--          <a class="page-link" href="#">{{ pageNo }}</a>-->
+    <!--        </li> &ndash;&gt;-->
+    <!--        <li-->
+    <!--            :class="['page-item ', currentPage === totalPage ? 'disabled' : '']"-->
+    <!--            @click.prevent="setPage(currentPage + 1)"-->
+    <!--        >-->
+    <!--          <a class="page-link" href="#">Next</a>-->
+    <!--        </li>-->
+    <!--      </ul>-->
+    <!--    </nav>-->
     <!-- End Pagination -->
+
+    <!-- Siyam Pagination -->
+    <nav aria-label="Page navigation example">
+      <div class="row">
+        <h4>Siyam Pagination</h4>
+        <div class="col-md-4">
+          <ul class="pagination" v-if="pagination.count">
+            <li class="page-item">
+              <a href="#">Showing {{ pagination.showing }} of {{ pagination.count }}</a>
+            </li>
+            <li :class="{ disabled: !pagination.previous }" class="page-item">
+              <a href="#!" v-on:click="setPage(pagination.previous)">Previous</a>
+            </li>
+
+            <li :class="{ disabled: !pagination.next }" class="page-item">
+              <a href="#!" v-on:click="setPage(pagination.next)">Next</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-2"></div>
+      </div>
+    </nav>
+    <!-- Siyam Pagination end -->
+
   </div>
   <!-- main row end -->
 </template>
@@ -172,9 +197,19 @@ export default {
       all_work_submissions: [],
       url: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
       currentPage: 1,
-      itemPerPage: 5,
+      // itemPerPage: 5,
       isLoading: true,
       isOnline: false,
+
+      // Siyam pagination
+      pagination: {
+        count: null,
+        next: null,
+        previous: null,
+        showing: 0,
+        page: null,
+      },
+
     };
   },
   methods: {
@@ -183,59 +218,93 @@ export default {
       const token = localStorage.getItem("token");
       const user_id = parseInt(localStorage.getItem("id"));
 
+      // Siyam pagination
+      let queryParam = {
+        page: this.$route.query.page,
+      };
+
+      axios
+          .get(this.url, {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            params: {
+              user_id,
+              page: this.$route.query.page, // for pagination
+
+              // Siyam pagination
+              queryParam
+            },
+          })
+          .then((response) => {
+            this.all_work_submissions = response.data.results;
+            localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions))
+            this.isLoading = false;
+
+            // Siyam pagination
+            this.pagination.count = response.data.count;
+            this.pagination.next = response.data.next;
+            this.pagination.previous = response.data.previous;
+            this.pagination.showing = response.data.results.length;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+
+      // LS
       if (localStorage.getItem("work_submissions")) {
         this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"))
         this.isLoading = false;
-      } else {
-        axios
-            .get(this.url, {
-              headers: {
-                Authorization: `token ${token}`,
-              },
-              params: {
-                user_id,
-                page: this.$route.query.page, // for pagination
-              },
-            })
-            .then((response) => {
-              this.all_work_submissions = response.data.results;
-              localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions))
-              this.isLoading = false;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
       }
 
     },
 
-    setPage: function (pageNumber) {
-      if (pageNumber <= 0 || pageNumber > this.totalPage) {
-        return;
-      }
-      this.currentPage = pageNumber;
-      // console.log("Current Page: ", this.currentPage)
+    // Siyam pagination
+    setPage(page) {
+      this.pagination.page = page;
+      this.searchWork();
     },
+
+    // Siyam pagination
+    async searchWork() {
+      await this.$router.push({
+        path: "work-submission-list",
+        query: {
+          page: this.pagination.page,
+        },
+      });
+      this.loadWorkSubmission();
+    },
+
+    // setPage: function (pageNumber) {
+    //   if (pageNumber <= 0 || pageNumber > this.totalPage) {
+    //     return;
+    //   }
+    //   this.currentPage = pageNumber;
+    //   // console.log("Current Page: ", this.currentPage)
+    // },
+
   },
 
   created() {
     this.loadWorkSubmission();
   },
 
-  computed: {
-    // show all  posts
-    displayedPosts() {
-      return this.all_work_submissions;
-    },
-    //
-    pageStart: function () {
-      return (this.currentPage - 1) * this.itemPerPage;
-    },
-    // show total pages
-    totalPage: function () {
-      return Math.ceil(this.all_work_submissions.length / this.itemPerPage);
-    },
-  },
+  // computed: {
+  //   // show all  posts
+  //   displayedPosts() {
+  //     return this.all_work_submissions;
+  //   },
+  //   //
+  //   pageStart: function () {
+  //     return (this.currentPage - 1) * this.itemPerPage;
+  //   },
+  //   // show total pages
+  //   totalPage: function () {
+  //     return Math.ceil(this.all_work_submissions.length / this.itemPerPage);
+  //   },
+  // },
+
 }; // export default
 </script>
 
