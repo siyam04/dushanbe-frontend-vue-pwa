@@ -107,10 +107,10 @@
               </div>
             </div>
 
-            <div class="inner-box mt-3">
+            <!-- <div class="inner-box mt-3">
               <small>Material</small>
               <p class="mb-0">{{ work.material.material_name }}</p>
-            </div>
+            </div> -->
 
             <div class="dropdown-divider my-3"></div>
             <div class="outer-box">

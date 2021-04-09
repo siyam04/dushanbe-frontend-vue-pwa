@@ -34,6 +34,12 @@
           <div class="form-group">
             <label>Bill</label>
 
+            <!-- <Select2
+              :options="filter_bill"
+              @change="myChangeEvent($event)"
+              @select="mySelectEvent($event)"
+            /> -->
+
             <select
               v-model="bill"
               @change="loadType()"
@@ -46,7 +52,7 @@
               <option selected disabled>select bill</option>
               <option v-for="bill in all_bills" :key="bill.id" :value="bill.id">
                 <!--{{ bill.short_bill_name }}-->
-                {{ bill.bill_name }}
+                {{ bill.bill_name.substr(0, 50) + "..." }}
               </option>
             </select>
 
@@ -83,7 +89,7 @@
                 :value="type.id"
               >
                 <!--{{ type.short_type_name }}-->
-                {{ type.type_name }}
+                {{ type.type_name.substr(0, 50) + "..." }}
               </option>
             </select>
 
@@ -120,7 +126,7 @@
                 :value="material.id"
               >
                 <!--{{ material.short_material_name }}-->
-                {{ material.material_name }}
+                {{ material.material_name.substr(0, 50) + "..." }}
               </option>
 
               <!-- material error handling -->
@@ -289,19 +295,31 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getRequest } from "@/plugins/requestHandler";
 
+// import Select2Component
+import Select2 from "vue3-select2-component";
+
 // IDB
 const DB_NAME = "TestIDB";
 
 /* exporting */
 export default {
   name: "Form",
+  components: { Select2 },
 
   data() {
     return {
+      myValue: "",
+      myOptions: [
+        { id: "key1", text: "value1" },
+        { id: "key1", text: "value2" },
+      ],
+
       /* GET API data */
       all_bills: [],
       all_types: [],
       all_materials: [],
+
+      filter_bill: [],
 
       /* filtered data */
       filtered_types_by_bill_id: [],
@@ -472,7 +490,7 @@ export default {
           });
 
           $(".SwalBtn1").on("click", function() {
-            window.history.go();
+            Swal.close();
             console.log("SwalBtn1");
           });
 
@@ -517,6 +535,10 @@ export default {
         $(".all-material").attr("disabled", "");
       }
     },
+
+    test() {
+      //
+    },
   },
 
   created() {
@@ -524,6 +546,7 @@ export default {
     this.todayDate();
     this.switchTypeField();
     this.switchMaterialField();
+    this.test();
   },
 }; // export default
 </script>
