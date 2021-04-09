@@ -164,10 +164,13 @@ export default {
         })
         .catch((error) => {
           this.login_validation_data = error.response.data;
+          this.isDataSubmit = false;
+
           Swal.fire({
             icon: "error",
             text: "Provided Credentials Are Not Correct! Please Try Again...",
           });
+
           return error.status(400).json({ error: error });
         }); // catch
     }, // loginSubmit
