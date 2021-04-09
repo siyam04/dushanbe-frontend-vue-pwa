@@ -107,23 +107,23 @@
               </div>
             </div>
 
-            <div class="inner-box mt-3">
+            <!-- <div class="inner-box mt-3">
               <small>Material</small>
+              <p class="mb-0">{{ work.material.material_name }}</p>
+            </div> -->
+
+            <div class="dropdown-divider mt-3"></div>
+            <div class="outer-box">
+              <h5>Material</h5>
               <p class="mb-0">{{ work.material.material_name }}</p>
             </div>
 
-            <div class="dropdown-divider my-3"></div>
-            <div class="outer-box">
-              <h5>Material</h5>
-              <p>{{ work.material.material_name }}</p>
-            </div>
-
-            <div class="dropdown-divider my-3"></div>
+            <!-- <div class="dropdown-divider my-3"></div>
 
             <div class="box">
               <small>Submitted By</small>
               <h5 class="mb-0">{{ work.created_by.username }}</h5>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
