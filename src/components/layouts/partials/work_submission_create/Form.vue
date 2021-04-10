@@ -527,13 +527,13 @@ export default {
           this.isDataSubmit = false;
         });
 
-      if (!window.navigator.onLine == true) {
+      if (!window.navigator.onLine === true) {
         Swal.fire({
           icon: "success",
           html:
             "Work Submitted Successfully!" +
             "<br><br>" +
-            "Data processing in background" +
+            "Your Work is Processing in the Background. Work Will Add to SharePoint When Online and You Can View Your Work When Online." +
             "<br><br>" +
             '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
             "Add Again" +
