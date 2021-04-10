@@ -6,18 +6,18 @@
     <div class="container">
       <!-- form start -->
       <form
-        name="bill_form"
-        id="form_reset"
-        class="form rounded bg-white"
-        @submit.prevent="submitBillSubmissionForm"
+          name="bill_form"
+          id="form_reset"
+          class="form rounded bg-white"
+          @submit.prevent="submitBillSubmissionForm"
       >
         <!-- logo & heading -->
         <div class="card-header bg-white">
           <div class="header d-flex align-items-center">
             <router-link :to="{ path: '/work-submission-create' }">
               <img
-                src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
-                alt="Dushanbe"
+                  src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
+                  alt="Dushanbe"
               />
             </router-link>
             <h1 class="">Work Submission | Dushanbe</h1>
@@ -41,10 +41,10 @@
             /> -->
 
             <select
-              v-model="bill"
-              @change="loadType()"
-              class="custom-select"
-              :class="{
+                v-model="bill"
+                @change="loadType()"
+                class="custom-select"
+                :class="{
                 'is-invalid':
                   field_validation_data && field_validation_data.bill,
               }"
@@ -58,16 +58,16 @@
 
             <!-- bill error handling-->
             <div
-              :class="{
+                :class="{
                 'invalid-feedback':
                   field_validation_data && field_validation_data.bill,
               }"
-              v-if="field_validation_data && field_validation_data.bill"
+                v-if="field_validation_data && field_validation_data.bill"
             >
               {{
                 !isOnline
-                  ? field_validation_data.Bill
-                  : field_validation_data.bill[0]
+                    ? field_validation_data.Bill
+                    : field_validation_data.bill[0]
               }}
             </div>
           </div>
@@ -77,20 +77,20 @@
           <div class="form-group">
             <label>Type</label>
             <select
-              :disabled="switchTypeField()"
-              v-model="type"
-              :class="
+                :disabled="switchTypeField()"
+                v-model="type"
+                :class="
                 field_validation_data && field_validation_data.type
                   ? 'custom-select is-invalid'
                   : 'custom-select all-type'
               "
-              @change="loadMaterial()"
+                @change="loadMaterial()"
             >
               <option selected disabled>Select</option>
               <option
-                v-for="type in filtered_types_by_bill_id"
-                :key="type.id"
-                :value="type.id"
+                  v-for="type in filtered_types_by_bill_id"
+                  :key="type.id"
+                  :value="type.id"
               >
                 <!--{{ type.short_type_name }}-->
                 {{ type.type_name.substr(0, 50) + "..." }}
@@ -99,16 +99,16 @@
 
             <!-- type error handling-->
             <div
-              :class="{
+                :class="{
                 'invalid-feedback':
                   field_validation_data && field_validation_data.type,
               }"
-              v-if="field_validation_data && field_validation_data.type"
+                v-if="field_validation_data && field_validation_data.type"
             >
               {{
                 !isOnline
-                  ? field_validation_data.Type
-                  : field_validation_data.type[0]
+                    ? field_validation_data.Type
+                    : field_validation_data.type[0]
               }}
             </div>
           </div>
@@ -118,20 +118,20 @@
           <div class="form-group">
             <label>Material</label>
             <select
-              :disabled="switchMaterialField()"
-              v-model="material"
-              :class="
+                :disabled="switchMaterialField()"
+                v-model="material"
+                :class="
                 field_validation_data && field_validation_data.material
                   ? 'custom-select is-invalid'
                   : 'custom-select all-material'
               "
-              @change="loadMaterialData()"
+                @change="loadMaterialData()"
             >
               <option selected disabled>select material</option>
               <option
-                v-for="material in filtered_materials_by_type_id"
-                :key="material.id"
-                :value="material.id"
+                  v-for="material in filtered_materials_by_type_id"
+                  :key="material.id"
+                  :value="material.id"
               >
                 <!--{{ material.short_material_name }}-->
                 {{ material.material_name.substr(0, 50) + "..." }}
@@ -139,16 +139,16 @@
 
               <!-- material error handling -->
               <div
-                :class="{
+                  :class="{
                   'invalid-feedback':
                     field_validation_data && field_validation_data.material,
                 }"
-                v-if="field_validation_data && field_validation_data.material"
+                  v-if="field_validation_data && field_validation_data.material"
               >
                 {{
                   !isOnline
-                    ? field_validation_data.material
-                    : field_validation_data.material[0]
+                      ? field_validation_data.material
+                      : field_validation_data.material[0]
                 }}
               </div>
             </select>
@@ -159,11 +159,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-lg-0">
                   <input
-                    disabled
-                    id="serial_number"
-                    v-model="serial_no"
-                    class="form-control"
-                    placeholder="Serial Number"
+                      disabled
+                      id="serial_number"
+                      v-model="serial_no"
+                      class="form-control"
+                      placeholder="Serial Number"
                   />
                 </div>
               </div>
@@ -172,11 +172,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-lg-0">
                   <input
-                    disabled
-                    id="unit"
-                    v-model="unit"
-                    class="form-control"
-                    placeholder="Unit"
+                      disabled
+                      id="unit"
+                      v-model="unit"
+                      class="form-control"
+                      placeholder="Unit"
                   />
                 </div>
               </div>
@@ -185,11 +185,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <input
-                    disabled
-                    id="quantity"
-                    v-model="quantity"
-                    class="form-control"
-                    placeholder="Quantity"
+                      disabled
+                      id="quantity"
+                      v-model="quantity"
+                      class="form-control"
+                      placeholder="Quantity"
                   />
                 </div>
               </div>
@@ -207,11 +207,11 @@
                 <div class="position-relative form-group mb-lg-0">
                   <label>Date</label>
                   <input
-                    type="date"
-                    id="submission_date"
-                    class="form-control"
-                    v-model="submission_date"
-                    :class="{
+                      type="date"
+                      id="submission_date"
+                      class="form-control"
+                      v-model="submission_date"
+                      :class="{
                       'is-invalid':
                         field_validation_data &&
                         field_validation_data.submission_date,
@@ -220,20 +220,20 @@
 
                   <!--Error Handling-->
                   <div
-                    :class="{
+                      :class="{
                       'invalid-feedback':
                         field_validation_data &&
                         field_validation_data.submission_date,
                     }"
-                    v-if="
+                      v-if="
                       field_validation_data &&
                         field_validation_data.submission_date
                     "
                   >
                     {{
                       !isOnline
-                        ? field_validation_data.submission_date
-                        : field_validation_data.submission_date[0]
+                          ? field_validation_data.submission_date
+                          : field_validation_data.submission_date[0]
                     }}
                   </div>
                 </div>
@@ -242,19 +242,19 @@
               <!-- WorkProgress -->
               <div class="col-md-6">
                 <div class="position-relative form-group mb-0">
-                  <label>Work Progress</label> <br />
+                  <label>Work Progress</label> <br/>
                   <!-- <input type="range" class="form-range w-100 mt-2" v-model="work_progress"> -->
                   <!-- <p style="position: absolute; right: 0">{{work_progress}}</p> -->
 
                   <input
-                    type="number"
-                    id="work_progress"
-                    class="form-control"
-                    v-model="work_progress"
-                    placeholder="0"
-                    min="0"
-                    step=".01"
-                    :class="{
+                      type="number"
+                      id="work_progress"
+                      class="form-control"
+                      v-model="work_progress"
+                      placeholder="0"
+                      min="0"
+                      step=".01"
+                      :class="{
                       'is-invalid':
                         field_validation_data &&
                         field_validation_data.work_progress,
@@ -263,20 +263,20 @@
 
                   <!--Error Handling-->
                   <div
-                    :class="{
+                      :class="{
                       'invalid-feedback':
                         field_validation_data &&
                         field_validation_data.work_progress,
                     }"
-                    v-if="
+                      v-if="
                       field_validation_data &&
                         field_validation_data.work_progress
                     "
                   >
                     {{
                       !isOnline
-                        ? field_validation_data.work_progress
-                        : field_validation_data.work_progress[0]
+                          ? field_validation_data.work_progress
+                          : field_validation_data.work_progress[0]
                     }}
                   </div>
                 </div>
@@ -289,10 +289,10 @@
           <!-- Submit Button -->
           <div class="btn-container">
             <button
-              @submit.prevent="submitBillSubmissionForm"
-              id="submit_button"
-              class=" btn btn-primary mt-1"
-              :disabled="isDataSubmit ? true : false"
+                @submit.prevent="submitBillSubmissionForm"
+                id="submit_button"
+                class=" btn btn-primary mt-1"
+                :disabled="isDataSubmit ? true : false"
             >
               {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
@@ -313,13 +313,11 @@
 import $ from "jquery";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { getRequest } from "@/plugins/requestHandler";
+import {getRequest} from "@/plugins/requestHandler";
 
 // import Select2Component
 // import Select2 from "vue3-select2-component";
 
-// IDB
-const DB_NAME = "TestIDB";
 
 /* exporting */
 export default {
@@ -421,25 +419,25 @@ export default {
     },
 
     /* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
-    loadType: function() {
+    loadType: function () {
       this.filtered_types_by_bill_id = this.all_types.filter((item) => {
         return item.bill.id === this.bill;
       });
     },
 
     /* Material List (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
-    loadMaterial: function() {
+    loadMaterial: function () {
       this.filtered_materials_by_type_id = this.all_materials.filter((item) => {
         return item.type.id === this.type;
       });
     },
 
     /* Material Data (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
-    loadMaterialData: function() {
+    loadMaterialData: function () {
       let selected_material = this.filtered_materials_by_type_id.filter(
-        (item) => {
-          return item.id === this.material;
-        }
+          (item) => {
+            return item.id === this.material;
+          }
       );
       let material_data = selected_material.length ? selected_material[0] : {};
       this.serial_no = material_data.serial_no;
@@ -448,7 +446,7 @@ export default {
     },
 
     /* Display today's date into 'submission_date' field */
-    todayDate: function() {
+    todayDate: function () {
       // const current = new Date()
       // this.submission_date = current.getFullYear() + '-' + (current.getMonth()+1) + '-' + current.getDate()
       this.submission_date = new Date().toISOString().substr(0, 10);
@@ -459,7 +457,7 @@ export default {
       const token = localStorage.getItem("token");
 
       const headerConfig = {
-        headers: { Authorization: `token ${token}` },
+        headers: {Authorization: `token ${token}`},
       };
 
       const bodyParameters = {
@@ -473,83 +471,99 @@ export default {
       this.isDataSubmit = true;
 
       axios
-        .post(
-          "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-          bodyParameters,
-          headerConfig
-        )
-        .then((response) => {
-          this.isDataSubmit = false;
+          .post(
+              "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+              bodyParameters,
+              headerConfig
+          )
+          .then((response) => {
+            this.isDataSubmit = false;
+
+            Swal.fire({
+              icon: "success",
+              // text: "Work Submitted Successfully!",
+              html:
+                  "Work Submitted Successfully!" +
+                  "<br><br>" +
+                  '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                  "Add Again" +
+                  "</button>" +
+                  '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                  "View List" +
+                  "</button> </div>",
+              showCancelButton: false,
+              showConfirmButton: false,
+            });
+
+            $(".SwalBtn1").on("click", function () {
+              Swal.close();
+              console.log("SwalBtn1");
+            });
+
+            $(".SwalBtn2").on("click", function () {
+              console.log("SwalBtn2");
+              window.location.assign("work-submission-list");
+            });
+
+            // console.log(response);
+          })
+          .catch((error) => {
+            // console.log(error);
+
+            if (window.navigator.onLine) {
+              this.field_validation_data = error.response.data;
+            } else {
+              this.field_validation_data = {
+                bill: "This field may not be null",
+                type: "This field may not be null",
+                material: "This field may not be null",
+                submission_date: "This field may not be null",
+                work_progress: "This field may not be null",
+              };
+            }
+
+            this.isDataSubmit = false;
+          });
+
+      if (!window.navigator.onLine === true) {
+        // console.log('529', bodyParameters)
+        // console.log('--', this.bill)
+        // console.log('--', this.type)
+        // console.log('--', this.material)
+
+        if (this.bill && this.type && this.material && this.submission_date && this.work_progress) {
+
+          // this.field_validation_data = {
+          //   bill: null,
+          //   type: null,
+          //   material: null,
+          //   submission_date: null,
+          //   work_progress: null,
+          // };
 
           Swal.fire({
             icon: "success",
-            // text: "Work Submitted Successfully!",
             html:
-              "Work Submitted Successfully!" +
-              "<br><br>" +
-              '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-              "Add Again" +
-              "</button>" +
-              '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
-              "View Lists" +
-              "</button> </div>",
+                "Work Submitted Successfully!" +
+                "<br><br>" +
+                "Your Work is Processing in the Background. Work Will Add to SharePoint When Online and You Can View Your Work When Online." +
+                "<br><br>" +
+                '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                "Add Again" +
+                "</button>",
             showCancelButton: false,
             showConfirmButton: false,
+          }).then((res) => {
+            this.isDataSubmit = false;
+            console.log("You are in offline");
+
+            console.log(this.field_validation_data);
           });
 
-          $(".SwalBtn1").on("click", function() {
+          $(".SwalBtn1").on("click", function () {
             Swal.close();
-            console.log("SwalBtn1");
           });
-
-          $(".SwalBtn2").on("click", function() {
-            console.log("SwalBtn2");
-            window.location.assign("work-submission-list");
-          });
-
-          // console.log(response);
-        })
-        .catch((error) => {
-          // console.log(error);
-
-          if (window.navigator.onLine) {
-            this.field_validation_data = error.response.data;
-          } else {
-            this.field_validation_data = {
-              bill: "This field may not be null",
-              type: "This field may not be null",
-              material: "This field may not be null",
-              submission_date: "This field may not be null",
-              work_progress: "This field may not be null",
-            };
-          }
-
-          this.isDataSubmit = false;
-        });
-
-      if (!window.navigator.onLine === true) {
-        Swal.fire({
-          icon: "success",
-          html:
-            "Work Submitted Successfully!" +
-            "<br><br>" +
-            "Your Work is Processing in the Background. Work Will Add to SharePoint When Online and You Can View Your Work When Online." +
-            "<br><br>" +
-            '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-            "Add Again" +
-            "</button>",
-          showCancelButton: false,
-          showConfirmButton: false,
-        }).then((res) => {
-          this.isDataSubmit = false;
-          console.log("You are in offline");
-
-          console.log(this.field_validation_data);
-        });
-
-        $(".SwalBtn1").on("click", function() {
-          Swal.close();
-        });
+        }
       }
 
       this.bill = null;
@@ -564,20 +578,20 @@ export default {
 
     /* Deactivate type field if no dependant API data */
     switchTypeField() {
-      if (this.filtered_types_by_bill_id.length > 0) {
-        $(".all-type").removeAttr("disabled");
-      } else {
-        $(".all-type").attr("disabled", "");
-      }
+      // if (this.filtered_types_by_bill_id.length > 0) {
+      //   $(".all-type").removeAttr("disabled");
+      // } else {
+      //   $(".all-type").attr("disabled", "");
+      // }
     },
 
     /* Deactivate material field if no dependant API data */
     switchMaterialField() {
-      if (this.filtered_materials_by_type_id.length > 0) {
-        $(".all-material").removeAttr("disabled");
-      } else {
-        $(".all-material").attr("disabled", "");
-      }
+      // if (this.filtered_materials_by_type_id.length > 0) {
+      //   $(".all-material").removeAttr("disabled");
+      // } else {
+      //   $(".all-material").attr("disabled", "");
+      // }
     },
 
     test() {
