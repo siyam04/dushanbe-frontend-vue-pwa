@@ -64,7 +64,11 @@
               }"
               v-if="field_validation_data && field_validation_data.bill"
             >
-              {{ field_validation_data.bill[0] }}
+              {{
+                !isOnline
+                  ? field_validation_data.Bill
+                  : field_validation_data.bill[0]
+              }}
             </div>
           </div>
           <!-- Bill end -->
@@ -101,7 +105,11 @@
               }"
               v-if="field_validation_data && field_validation_data.type"
             >
-              {{ field_validation_data.type[0] }}
+              {{
+                !isOnline
+                  ? field_validation_data.Type
+                  : field_validation_data.type[0]
+              }}
             </div>
           </div>
           <!-- Type end -->
@@ -137,7 +145,11 @@
                 }"
                 v-if="field_validation_data && field_validation_data.material"
               >
-                {{ field_validation_data.material[0] }}
+                {{
+                  !isOnline
+                    ? field_validation_data.material
+                    : field_validation_data.material[0]
+                }}
               </div>
             </select>
 
@@ -218,7 +230,11 @@
                         field_validation_data.submission_date
                     "
                   >
-                    {{ field_validation_data.submission_date[0] }}
+                    {{
+                      !isOnline
+                        ? field_validation_data.submission_date
+                        : field_validation_data.submission_date[0]
+                    }}
                   </div>
                 </div>
               </div>
@@ -257,7 +273,11 @@
                         field_validation_data.work_progress
                     "
                   >
-                    {{ field_validation_data.work_progress[0] }}
+                    {{
+                      !isOnline
+                        ? field_validation_data.work_progress
+                        : field_validation_data.work_progress[0]
+                    }}
                   </div>
                 </div>
               </div>
@@ -296,7 +316,7 @@ import Swal from "sweetalert2";
 import { getRequest } from "@/plugins/requestHandler";
 
 // import Select2Component
-import Select2 from "vue3-select2-component";
+// import Select2 from "vue3-select2-component";
 
 // IDB
 const DB_NAME = "TestIDB";
@@ -304,16 +324,10 @@ const DB_NAME = "TestIDB";
 /* exporting */
 export default {
   name: "Form",
-  components: { Select2 },
+  // components: { Select2 },
 
   data() {
     return {
-      myValue: "",
-      myOptions: [
-        { id: "key1", text: "value1" },
-        { id: "key1", text: "value2" },
-      ],
-
       /* GET API data */
       all_bills: [],
       all_types: [],
@@ -339,14 +353,17 @@ export default {
 
       /* field error validation data */
       field_validation_data: {
-        bill: null,
-        type: null,
-        material: null,
-        submission_date: null,
-        work_progress: null,
+        bill: "",
+        type: "",
+        material: "",
+        submission_date: "",
+        work_progress: "",
       },
 
+      test1: "",
+
       isDataSubmit: false,
+      isOnline: window.navigator.onLine,
 
       /* localStorage data */
       username: localStorage.getItem("username"),
@@ -464,27 +481,18 @@ export default {
         .then((response) => {
           this.isDataSubmit = false;
 
-          // Swal.fire({
-          //   icon: "success",
-          //   text: "Work Submitted Successfully!",
-          // }).then((result) => {
-          //   // this.$router.go()
-          //   // this.$router.push("work-submission-list")
-          //   console.log(result);
-          // });
-
           Swal.fire({
             icon: "success",
             // text: "Work Submitted Successfully!",
             html:
               "Work Submitted Successfully!" +
               "<br><br>" +
-              '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-              "Add Another" +
+              '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+              "Add Again" +
               "</button>" +
               '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
               "View Lists" +
-              "</button>",
+              "</button> </div>",
             showCancelButton: false,
             showConfirmButton: false,
           });
@@ -499,14 +507,50 @@ export default {
             window.location.assign("work-submission-list");
           });
 
-          console.log(response);
+          // console.log(response);
         })
         .catch((error) => {
-          this.field_validation_data = error.response.data;
+          // console.log(error);
+
+          if (window.navigator.onLine) {
+            this.field_validation_data = error.response.data;
+          } else {
+            this.field_validation_data = {
+              bill: "This field may not be null",
+              type: "This field may not be null",
+              material: "This field may not be null",
+              submission_date: "This field may not be null",
+              work_progress: "This field may not be null",
+            };
+          }
+
           this.isDataSubmit = false;
         });
 
-      // document.getElementById("form_reset").reset();
+      if (!window.navigator.onLine == true) {
+        Swal.fire({
+          icon: "success",
+          html:
+            "Work Submitted Successfully!" +
+            "<br><br>" +
+            "Data processing in background" +
+            "<br><br>" +
+            '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+            "Add Again" +
+            "</button>",
+          showCancelButton: false,
+          showConfirmButton: false,
+        }).then((res) => {
+          this.isDataSubmit = false;
+          console.log("You are in offline");
+
+          console.log(this.field_validation_data);
+        });
+
+        $(".SwalBtn1").on("click", function() {
+          Swal.close();
+        });
+      }
 
       this.bill = null;
       this.type = null;
@@ -661,6 +705,18 @@ label {
 
   .navbar-nav li {
     margin-left: 15px;
+  }
+
+  .swal2-content {
+    padding: 0 !important;
+  }
+
+  .swal-btn-cotnainer {
+    display: flex;
+  }
+
+  .swal-btn-cotnainer .btn {
+    width: 50%;
   }
 }
 
