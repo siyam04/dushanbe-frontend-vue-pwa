@@ -546,7 +546,7 @@ export default {
             html:
                 "Work Submitted Successfully!" +
                 "<br><br>" +
-                "Your Work is Processing in the Background. Work Will Add to SharePoint When Online and You Can View Your Work When Online." +
+                "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work-list when you're back online." +
                 "<br><br>" +
                 '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
                 "Add Again" +
