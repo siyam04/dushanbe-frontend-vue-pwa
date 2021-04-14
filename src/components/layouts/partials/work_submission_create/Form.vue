@@ -330,6 +330,7 @@ export default {
       all_bills: [],
       all_types: [],
       all_materials: [],
+      work_submissions: [],
 
       filter_bill: [],
 
@@ -452,6 +453,29 @@ export default {
       this.submission_date = new Date().toISOString().substr(0, 10);
     },
 
+    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+    loadWorkSubmission() {
+      const token = localStorage.getItem("token");
+      const user_id = parseInt(localStorage.getItem("id"));
+
+      axios
+          .get('https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/', {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            params: {
+              user_id,
+            },
+          })
+          .then((response) => {
+            this.work_submissions = response.data.results;
+            localStorage.setItem("work_submissions", JSON.stringify(this.work_submissions));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
+
     /* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     submitBillSubmissionForm() {
       const token = localStorage.getItem("token");
@@ -470,6 +494,7 @@ export default {
 
       this.isDataSubmit = true;
 
+      /* online first */
       axios
           .post(
               "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
@@ -525,12 +550,8 @@ export default {
             this.isDataSubmit = false;
           });
 
+      /* offline */
       if (!window.navigator.onLine === true) {
-        // console.log('529', bodyParameters)
-        // console.log('--', this.bill)
-        // console.log('--', this.type)
-        // console.log('--', this.material)
-
         if (this.bill && this.type && this.material && this.submission_date && this.work_progress) {
 
           // this.field_validation_data = {
@@ -541,22 +562,52 @@ export default {
           //   work_progress: null,
           // };
 
+          /* LS config */
+          console.log('--myArr--:', this.work_submissions)
+          console.log('--myobj--:', bodyParameters)
+
+          let parseGetDataFromStringfy = JSON.parse(localStorage.getItem('work_submissions') ? localStorage.getItem("work_submissions") : "[]")
+          console.log('--parseGetDataFromStringfy--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
+
+          let pushData = [...parseGetDataFromStringfy, bodyParameters]
+          console.log('--pushData--:', typeof pushData, pushData)
+
+          pushData.filter(item => {
+            console.log('--item_id--', item.id)
+            console.log('--bill_name--', item.bill.short_bill_name)
+            console.log('--type_name--', item.type.short_type_name)
+            console.log('--short_material_name--', item.material.short_material_name)
+            console.log('--submission_date--', item.submission_date)
+            console.log('--work_progress--', item.work_progress)
+            console.log('--created_by--', item.created_by.username)
+          })
+
           Swal.fire({
             icon: "success",
+            // html:
+            //     "Work Submitted Successfully!" +
+            //     "<br><br>" +
+            //     "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work list when you're back online." +
+            //     "<br><br>" +
+            //     '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+            //     "Add Again" +
+            //     "</button>",
+
             html:
-                "Work Submitted Successfully!" +
-                "<br><br>" +
-                "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work-list when you're back online." +
-                "<br><br>" +
-                '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-                "Add Again" +
-                "</button>",
+                  "Work Submitted Successfully!" +
+                  "<br><br>" +
+                  '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                  "Add Again" +
+                  "</button>" +
+                  '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                  "View List" +
+                  "</button> </div>",
+
             showCancelButton: false,
             showConfirmButton: false,
           }).then((res) => {
             this.isDataSubmit = false;
             console.log("You are in offline");
-
             console.log(this.field_validation_data);
           });
 
@@ -604,6 +655,7 @@ export default {
     this.todayDate();
     this.switchTypeField();
     this.switchMaterialField();
+    this.loadWorkSubmission();
     this.test();
   },
 }; // export default

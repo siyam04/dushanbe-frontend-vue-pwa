@@ -4,12 +4,12 @@
   <div class="main-header bg-white shadow-sm px-3 py-2">
     <div class="container">
       <div
-        class="header-box bg-white d-flex align-items-center justify-content-between"
+          class="header-box bg-white d-flex align-items-center justify-content-between"
       >
         <div class="header d-flex align-items-center">
           <img
-            src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
-            alt="Dushanbe"
+              src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
+              alt="Dushanbe"
           />
           <h1 class="mb-0">Works List</h1>
         </div>
@@ -24,16 +24,16 @@
     </div>
   </div>
 
-  <CheckOnlineOrOffline class="mb-4" />
+  <CheckOnlineOrOffline class="mb-4"/>
 
   <div class="container mb-4">
     <!-- Start Data Loader -->
     <div v-if="isLoading" class="loading-container">
       <div class="d-flex align-items-center">
         <div
-          class="spinner-border spinner-border-sm"
-          role="status"
-          aria-hidden="true"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
         ></div>
         <h6 class="ml-2 mb-0">Loading...</h6>
       </div>
@@ -42,28 +42,28 @@
 
     <div class="accordion mt-4" id="accordionExample">
       <div
-        class="card"
-        v-for="(work, index) in all_work_submissions
+          class="card"
+          v-for="(work, index) in all_work_submissions
           .slice
           // pageStart,
           // pageStart + itemPerPage
           ()"
-        :key="work.id"
+          :key="work.id"
       >
         <div class="card-header" :id="'heading_' + work.id">
           <h2 class="mb-0">
             <button
-              class="btn btn-link"
-              type="button"
-              data-toggle="collapse"
-              :data-target="'#collapse_' + work.id"
-              :aria-expanded="index < 1 ? true : false"
-              :aria-controls="'collapse_' + work.id"
+                class="btn btn-link"
+                type="button"
+                data-toggle="collapse"
+                :data-target="'#collapse_' + work.id"
+                :aria-expanded="index < 1 ? true : false"
+                :aria-controls="'collapse_' + work.id"
             >
               <span>{{
-                // index + 1 + ". " + work.bill.short_bill_name + "..."
-                work.id + ". " + work.bill.bill_name + "..."
-              }}</span>
+                  // index + 1 + ". " + work.bill.short_bill_name + "..."
+                  work.id + ". " + work.bill.bill_name + "..."
+                }}</span>
 
               <span>{{ work.submission_date }}</span>
             </button>
@@ -71,10 +71,10 @@
         </div>
 
         <div
-          :id="'collapse_' + work.id"
-          :class="index < 1 ? 'collapse show' : 'collapse'"
-          :aria-labelledby="'heading_' + work.id"
-          data-parent="#accordionExample"
+            :id="'collapse_' + work.id"
+            :class="index < 1 ? 'collapse show' : 'collapse'"
+            :aria-labelledby="'heading_' + work.id"
+            data-parent="#accordionExample"
         >
           <div class="card-body border-top">
             <div class="outer-box type-and-user">
@@ -158,8 +158,8 @@
 
     <!-- Siyam Pagination -->
     <div
-      class="pagination d-flex justify-content-between my-3"
-      v-if="pagination.count"
+        class="pagination d-flex justify-content-between my-3"
+        v-if="pagination.count"
     >
       <div class="">
         <p class="mb-0">
@@ -170,7 +170,7 @@
       <ul class="lists-group d-flex mb-0">
         <li :class="{ disabled: !pagination.previous }" class="page-item">
           <a href="#" class="btn" v-on:click="setPage(pagination.previous)"
-            >Previous</a
+          >Previous</a
           >
         </li>
 
@@ -187,11 +187,11 @@
 <!-- script section -->
 <script>
 import axios from "axios";
-import { getRequest } from "@/plugins/requestHandler";
+import {getRequest} from "@/plugins/requestHandler";
 import CheckOnlineOrOffline from "../onlineStatus/CheckOnlineOrOffline";
 
 export default {
-  components: { CheckOnlineOrOffline },
+  components: {CheckOnlineOrOffline},
   name: "WorkSubmissionList",
   data() {
     return {
@@ -224,45 +224,42 @@ export default {
       };
 
       axios
-        .get(this.url, {
-          headers: {
-            Authorization: `token ${token}`,
-          },
-          params: {
-            user_id,
-            page: this.$route.query.page, // for pagination
+          .get(this.url, {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            params: {
+              user_id,
+              page: this.$route.query.page, // for pagination
+
+              // Siyam pagination
+              queryParam,
+            },
+          })
+          .then((response) => {
+            this.all_work_submissions = response.data.results;
+            /* LocalStorage config */
+            // localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
+            this.isLoading = false;
 
             // Siyam pagination
-            queryParam,
-          },
-        })
-        .then((response) => {
-          this.all_work_submissions = response.data.results;
-          localStorage.setItem(
-            "work_submissions",
-            JSON.stringify(this.all_work_submissions)
-          );
-          this.isLoading = false;
-
-          // Siyam pagination
-          this.pagination.count = response.data.count;
-          this.pagination.next = response.data.next;
-          this.pagination.previous = response.data.previous;
-          this.pagination.showing = response.data.results.length;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+            this.pagination.count = response.data.count;
+            this.pagination.next = response.data.next;
+            this.pagination.previous = response.data.previous;
+            this.pagination.showing = response.data.results.length;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
 
       console.log(this.pagination);
 
-      // LS
-      if (localStorage.getItem("work_submissions")) {
-        this.all_work_submissions = JSON.parse(
-          localStorage.getItem("work_submissions")
-        );
-        this.isLoading = false;
-      }
+      /* LocalStorage config */
+      // if (localStorage.getItem("work_submissions")) {
+      //   this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
+      //   this.isLoading = false;
+      // }
+
     },
 
     // Siyam pagination
