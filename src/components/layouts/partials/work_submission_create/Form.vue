@@ -584,35 +584,32 @@ export default {
 
           Swal.fire({
             icon: "success",
-            // html:
-            //     "Work Submitted Successfully!" +
-            //     "<br><br>" +
-            //     "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work list when you're back online." +
-            //     "<br><br>" +
-            //     '<button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-            //     "Add Again" +
-            //     "</button>",
-
             html:
-                  "Work Submitted Successfully!" +
-                  "<br><br>" +
-                  '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
-                  "Add Again" +
-                  "</button>" +
-                  '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
-                  "View List" +
-                  "</button> </div>",
+                "Work Submitted Successfully!" +
+                "<br><br>" +
+                "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work list when you're back online." +
+                "<br><br>" +
+                '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                "Add Again" +
+                "</button>" +
+                '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                "View List" +
+                "</button> </div>",
 
             showCancelButton: false,
             showConfirmButton: false,
           }).then((res) => {
             this.isDataSubmit = false;
             console.log("You are in offline");
-            console.log(this.field_validation_data);
+            // console.log(this.field_validation_data);
           });
 
           $(".SwalBtn1").on("click", function () {
             Swal.close();
+          });
+          
+          $(".SwalBtn2").on("click", function () {
+            window.location.assign("view-lists");
           });
         }
       }
