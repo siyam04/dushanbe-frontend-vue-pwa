@@ -1,5 +1,5 @@
 /* vue-router */
-import ViewList from "@/components/layouts/partials/work_submission_create/ViewList";
+import ViewListOffline from "@/components/layouts/partials/work_submission_create/ViewListOffline";
 import WorkSubmissionList from "@/components/layouts/partials/work_submission_create/WorkSubmissionList";
 /* login component */
 import Login from "@/views/Login";
@@ -41,8 +41,8 @@ const routes = [
 
     {
         path: "/view-lists",
-        name: "ViewList",
-        component: ViewList,
+        name: "ViewListOffline",
+        component: ViewListOffline,
         // beforeEnter: router_middlewares.app_mode(),
         // beforeEnter: router_middlewares.guardRoute(),
     },

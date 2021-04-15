@@ -192,7 +192,7 @@ import CheckOnlineOrOffline from "../onlineStatus/CheckOnlineOrOffline";
 
 export default {
   components: {CheckOnlineOrOffline},
-  name: "ViewList",
+  name: "ViewListOffline",
   data() {
     return {
       all_work_submissions: [],

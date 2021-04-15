@@ -239,7 +239,7 @@ export default {
           .then((response) => {
             this.all_work_submissions = response.data.results;
             /* LocalStorage config */
-            // localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
+            localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
             this.isLoading = false;
 
             // Siyam pagination
@@ -255,10 +255,10 @@ export default {
       console.log(this.pagination);
 
       /* LocalStorage config */
-      // if (localStorage.getItem("work_submissions")) {
-      //   this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
-      //   this.isLoading = false;
-      // }
+      if (localStorage.getItem("work_submissions")) {
+        this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
+        this.isLoading = false;
+      }
 
     },
 

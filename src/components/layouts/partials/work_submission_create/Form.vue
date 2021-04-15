@@ -563,24 +563,26 @@ export default {
           // };
 
           /* LS config */
-          console.log('--myArr--:', this.work_submissions)
-          console.log('--myobj--:', bodyParameters)
+          // console.log('--myArr--:', this.work_submissions)
+          // console.log('--myobj--:', bodyParameters)
 
           let parseGetDataFromStringfy = JSON.parse(localStorage.getItem('work_submissions') ? localStorage.getItem("work_submissions") : "[]")
-          console.log('--parseGetDataFromStringfy--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
+          // console.log('--parseGetDataFromStringfy--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
 
           let pushData = [...parseGetDataFromStringfy, bodyParameters]
-          console.log('--pushData--:', typeof pushData, pushData)
+          localStorage.setItem("work_submissions", JSON.stringify(pushData));
 
-          pushData.filter(item => {
-            console.log('--item_id--', item.id)
-            console.log('--bill_name--', item.bill.short_bill_name)
-            console.log('--type_name--', item.type.short_type_name)
-            console.log('--short_material_name--', item.material.short_material_name)
-            console.log('--submission_date--', item.submission_date)
-            console.log('--work_progress--', item.work_progress)
-            console.log('--created_by--', item.created_by.username)
-          })
+          // console.log('--pushData--:', typeof pushData, pushData)
+
+          // pushData.filter(item => {
+          //   console.log('--item_id--', item.id)
+          //   console.log('--bill_name--', item.bill.short_bill_name)
+          //   console.log('--type_name--', item.type.short_type_name)
+          //   console.log('--short_material_name--', item.material.short_material_name)
+          //   console.log('--submission_date--', item.submission_date)
+          //   console.log('--work_progress--', item.work_progress)
+          //   console.log('--created_by--', item.created_by.username)
+          // })
 
           Swal.fire({
             icon: "success",
@@ -607,7 +609,7 @@ export default {
           $(".SwalBtn1").on("click", function () {
             Swal.close();
           });
-          
+
           $(".SwalBtn2").on("click", function () {
             window.location.assign("view-lists");
           });
