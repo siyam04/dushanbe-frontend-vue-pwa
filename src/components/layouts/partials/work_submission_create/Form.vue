@@ -5,7 +5,12 @@
     <!-- main div -->
     <div class="container">
       <!-- form start -->
-      <form name="bill_form" class="form rounded bg-white" @submit.prevent="submitBillSubmissionForm">
+      <form
+          name="bill_form"
+          id="form_reset"
+          class="form rounded bg-white"
+          @submit.prevent="submitBillSubmissionForm"
+      >
         <!-- logo & heading -->
         <div class="card-header bg-white">
           <div class="header d-flex align-items-center">
@@ -21,9 +26,19 @@
 
         <!-- card body -->
         <div class="card-body">
+          <!-- array of strings or numbers -->
+          <!-- <h1>hello</h1>
+          <v-select :options="['Canada', 'United States']"></v-select> -->
+
           <!-- Bill-->
           <div class="form-group">
             <label>Bill</label>
+
+            <!-- <Select2
+              :options="filter_bill"
+              @change="myChangeEvent($event)"
+              @select="mySelectEvent($event)"
+            /> -->
 
             <select
                 v-model="bill"
@@ -36,7 +51,8 @@
             >
               <option selected disabled>select bill</option>
               <option v-for="bill in all_bills" :key="bill.id" :value="bill.id">
-                {{ bill.short_bill_name }}
+                <!--{{ bill.short_bill_name }}-->
+                {{ bill.bill_name.substr(0, 50) + "..." }}
               </option>
             </select>
 
@@ -48,7 +64,11 @@
               }"
                 v-if="field_validation_data && field_validation_data.bill"
             >
-              {{ field_validation_data.bill[0] }}
+              {{
+                !isOnline
+                    ? field_validation_data.Bill
+                    : field_validation_data.bill[0]
+              }}
             </div>
           </div>
           <!-- Bill end -->
@@ -67,8 +87,13 @@
                 @change="loadMaterial()"
             >
               <option selected disabled>Select</option>
-              <option v-for="type in filtered_types_by_bill_id" :key="type.id" :value="type.id">
-                {{ type.short_type_name }}
+              <option
+                  v-for="type in filtered_types_by_bill_id"
+                  :key="type.id"
+                  :value="type.id"
+              >
+                <!--{{ type.short_type_name }}-->
+                {{ type.type_name.substr(0, 50) + "..." }}
               </option>
             </select>
 
@@ -80,7 +105,11 @@
               }"
                 v-if="field_validation_data && field_validation_data.type"
             >
-              {{ field_validation_data.type[0] }}
+              {{
+                !isOnline
+                    ? field_validation_data.Type
+                    : field_validation_data.type[0]
+              }}
             </div>
           </div>
           <!-- Type end -->
@@ -104,7 +133,8 @@
                   :key="material.id"
                   :value="material.id"
               >
-                {{ material.short_material_name }}
+                <!--{{ material.short_material_name }}-->
+                {{ material.material_name.substr(0, 50) + "..." }}
               </option>
 
               <!-- material error handling -->
@@ -115,7 +145,11 @@
                 }"
                   v-if="field_validation_data && field_validation_data.material"
               >
-                {{ field_validation_data.material[0] }}
+                {{
+                  !isOnline
+                      ? field_validation_data.material
+                      : field_validation_data.material[0]
+                }}
               </div>
             </select>
 
@@ -196,9 +230,12 @@
                         field_validation_data.submission_date
                     "
                   >
-                    {{ field_validation_data.submission_date[0] }}
+                    {{
+                      !isOnline
+                          ? field_validation_data.submission_date
+                          : field_validation_data.submission_date[0]
+                    }}
                   </div>
-
                 </div>
               </div>
 
@@ -236,9 +273,12 @@
                         field_validation_data.work_progress
                     "
                   >
-                    {{ field_validation_data.work_progress[0] }}
+                    {{
+                      !isOnline
+                          ? field_validation_data.work_progress
+                          : field_validation_data.work_progress[0]
+                    }}
                   </div>
-
                 </div>
               </div>
             </div>
@@ -251,9 +291,10 @@
             <button
                 @submit.prevent="submitBillSubmissionForm"
                 id="submit_button"
-                class="btn btn-primary mt-1"
+                class=" btn btn-primary mt-1"
+                :disabled="isDataSubmit ? true : false"
             >
-              SUBMIT
+              {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
           </div>
           <!-- Submit Button end-->
@@ -267,29 +308,31 @@
   <!-- main container end -->
 </template>
 
-
 <!-- script section -->
 <script>
-import $ from "jquery"
-import axios from "axios"
-import Swal from "sweetalert2"
+import $ from "jquery";
+import axios from "axios";
+import Swal from "sweetalert2";
 import {getRequest} from "@/plugins/requestHandler";
 
+// import Select2Component
+// import Select2 from "vue3-select2-component";
 
-// IDB
-const DB_NAME = "TestIDB"
 
 /* exporting */
 export default {
   name: "Form",
+  // components: { Select2 },
 
   data() {
     return {
-
       /* GET API data */
       all_bills: [],
       all_types: [],
       all_materials: [],
+      work_submissions: [],
+
+      filter_bill: [],
 
       /* filtered data */
       filtered_types_by_bill_id: [],
@@ -309,25 +352,27 @@ export default {
 
       /* field error validation data */
       field_validation_data: {
-        bill: null,
-        type: null,
-        material: null,
-        submission_date: null,
-        work_progress: null,
+        bill: "",
+        type: "",
+        material: "",
+        submission_date: "",
+        work_progress: "",
       },
+
+      test1: "",
+
+      isDataSubmit: false,
+      isOnline: window.navigator.onLine,
 
       /* localStorage data */
       username: localStorage.getItem("username"),
-
-    }
+    };
   },
 
   /* methods */
   methods: {
-
     /* first, getting all data from API */
     async getAllData() {
-
       /* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
 
       /* system-1: saving API */
@@ -335,11 +380,11 @@ export default {
 
       /* system-2: saving API to localStorage if not get already */
       if (localStorage.getItem("bills")) {
-        this.all_bills = JSON.parse(localStorage.getItem("bills"))
+        this.all_bills = JSON.parse(localStorage.getItem("bills"));
       } else {
-        let bills = await getRequest('bills/')
+        let bills = await getRequest("bills/");
         if (bills) {
-          localStorage.setItem("bills", JSON.stringify(bills))
+          localStorage.setItem("bills", JSON.stringify(bills));
         }
       }
 
@@ -350,11 +395,11 @@ export default {
 
       /* system-2: saving API to localStorage if not get already */
       if (localStorage.getItem("types")) {
-        this.all_types = JSON.parse(localStorage.getItem("types"))
+        this.all_types = JSON.parse(localStorage.getItem("types"));
       } else {
-        let types = await getRequest('types/')
+        let types = await getRequest("types/");
         if (types) {
-          localStorage.setItem("types", JSON.stringify(types))
+          localStorage.setItem("types", JSON.stringify(types));
         }
       }
 
@@ -365,55 +410,79 @@ export default {
 
       /* system-2: saving API to localStorage if not get already */
       if (localStorage.getItem("materials")) {
-        this.all_materials = JSON.parse(localStorage.getItem("materials"))
+        this.all_materials = JSON.parse(localStorage.getItem("materials"));
       } else {
-        let materials = await getRequest('materials/')
+        let materials = await getRequest("materials/");
         if (materials) {
-          localStorage.setItem("materials", JSON.stringify(materials))
+          localStorage.setItem("materials", JSON.stringify(materials));
         }
       }
-
     },
 
     /* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
     loadType: function () {
-      this.filtered_types_by_bill_id = this.all_types.filter(item => {
-        return item.bill.id === this.bill
-      })
+      this.filtered_types_by_bill_id = this.all_types.filter((item) => {
+        return item.bill.id === this.bill;
+      });
     },
 
     /* Material List (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
     loadMaterial: function () {
-      this.filtered_materials_by_type_id = this.all_materials.filter(item => {
-        return item.type.id === this.type
-      })
+      this.filtered_materials_by_type_id = this.all_materials.filter((item) => {
+        return item.type.id === this.type;
+      });
     },
 
     /* Material Data (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
     loadMaterialData: function () {
-      let selected_material = this.filtered_materials_by_type_id.filter(item => {
-        return item.id === this.material
-      })
-      let material_data = selected_material.length ? selected_material[0] : {}
-      this.serial_no = material_data.serial_no
-      this.unit = material_data.unit
-      this.quantity = material_data.quantity
+      let selected_material = this.filtered_materials_by_type_id.filter(
+          (item) => {
+            return item.id === this.material;
+          }
+      );
+      let material_data = selected_material.length ? selected_material[0] : {};
+      this.serial_no = material_data.serial_no;
+      this.unit = material_data.unit;
+      this.quantity = material_data.quantity;
     },
 
     /* Display today's date into 'submission_date' field */
     todayDate: function () {
       // const current = new Date()
       // this.submission_date = current.getFullYear() + '-' + (current.getMonth()+1) + '-' + current.getDate()
-      this.submission_date = new Date().toISOString().substr(0, 10)
+      this.submission_date = new Date().toISOString().substr(0, 10);
+    },
+
+    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+    loadWorkSubmission() {
+      const token = localStorage.getItem("token");
+      const user_id = parseInt(localStorage.getItem("id"));
+
+      axios
+          .get('https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/', {
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            params: {
+              user_id,
+            },
+          })
+          .then((response) => {
+            this.work_submissions = response.data.results;
+            localStorage.setItem("work_submissions", JSON.stringify(this.work_submissions));
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     },
 
     /* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     submitBillSubmissionForm() {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
 
       const headerConfig = {
-        headers: {Authorization: `token ${token}`}
-      }
+        headers: {Authorization: `token ${token}`},
+      };
 
       const bodyParameters = {
         bill: this.bill,
@@ -421,8 +490,11 @@ export default {
         material: this.material,
         submission_date: this.submission_date,
         work_progress: this.work_progress,
-      }
+      };
 
+      this.isDataSubmit = true;
+
+      /* online first */
       axios
           .post(
               "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
@@ -430,52 +502,243 @@ export default {
               headerConfig
           )
           .then((response) => {
+            this.isDataSubmit = false;
+
             Swal.fire({
               icon: "success",
-              text: "Work Submitted Successfully!",
-            }).then((result) => {
-              // this.$router.go()
-              this.$router.push("work-submission-list")
-              console.log(result)
+              // text: "Work Submitted Successfully!",
+              html:
+                  "Work Submitted Successfully!" +
+                  "<br><br>" +
+                  '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                  "Add Again" +
+                  "</button>" +
+                  '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                  "View List" +
+                  "</button> </div>",
+              showCancelButton: false,
+              showConfirmButton: false,
             });
-            console.log(response)
+
+            $(".SwalBtn1").on("click", function () {
+              Swal.close();
+              console.log("SwalBtn1");
+            });
+
+            $(".SwalBtn2").on("click", function () {
+              console.log("SwalBtn2");
+              window.location.assign("work-submission-list");
+            });
+
+            // console.log(response);
           })
           .catch((error) => {
-            this.field_validation_data = error.response.data
-          })
+            // console.log(error);
+
+            if (window.navigator.onLine) {
+              this.field_validation_data = error.response.data;
+            } else {
+              this.field_validation_data = {
+                bill: "This field may not be null",
+                type: "This field may not be null",
+                material: "This field may not be null",
+                submission_date: "This field may not be null",
+                work_progress: "This field may not be null",
+              };
+            }
+
+            this.isDataSubmit = false;
+          });
+
+      /* offline */
+      if (!window.navigator.onLine === true) {
+        if (this.bill && this.type && this.material && this.submission_date && this.work_progress) {
+
+          let selectedBill = this.all_bills.filter(item => {
+            return item.id === this.bill
+          })[0]
+          // console.log('--selectedBill--:', selectedBill)
+
+          let selectedType = this.all_types.filter(item => {
+            return item.id === this.type
+          })[0]
+          // console.log('--selectedType--:', selectedType)
+
+          let selectedMaterial = this.all_materials.filter(item => {
+            return item.id === this.material
+          })[0]
+          // console.log('--selectedMaterial--:', selectedMaterial)
+
+          let data = {
+            "bill": selectedBill,
+            "type": selectedType,
+            "material": selectedMaterial,
+            "submission_date": this.submission_date,
+            "work_progress": this.work_progress,
+            "created_by": {
+              "id": localStorage.getItem("id"),
+              "username": localStorage.getItem("username"),
+              "first_name": localStorage.getItem("first_name"),
+              "last_name": localStorage.getItem("last_name"),
+              "is_superuser": localStorage.getItem("superuser_status"),
+            },
+            "active_status": localStorage.getItem("active_status"),
+          }
+
+          console.log('--DATA--:', data)
+
+          // let data = {
+          //   "id": 214,
+          //   "bill": selectedBill,
+          //   "type": {
+          //     "id": 2,
+          //     "bill": {
+          //       "id": 1,
+          //       "short_bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)",
+          //       "bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)"
+          //     },
+          //     "short_type_name": "Manholes and Chambers",
+          //     "type_name": "Manholes and Chambers"
+          //   },
+          //   "material": {
+          //     "id": 32,
+          //     "type": {
+          //       "id": 2,
+          //       "bill": {
+          //         "id": 1,
+          //         "short_bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)",
+          //         "bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)"
+          //       },
+          //       "short_type_name": "Manholes and Chambers",
+          //       "type_name": "Manholes and Chambers"
+          //     },
+          //     "short_material_name": "Construction of concrete base plate/ blinding for chambers and manholes with thickness of 100mm out of concrete type B3.5, on the prepared gravel platf",
+          //     "serial_no": 20,
+          //     "unit": "m3",
+          //     "quantity": "3.50",
+          //     "material_name": "Construction of concrete base plate/ blinding for chambers and manholes with thickness of 100mm out of concrete type B3.5, on the prepared gravel platform"
+          //   },
+          //   "submission_date": "2021-04-17",
+          //   "work_progress": "100.00",
+          //   "created_by": {
+          //     "id": 1,
+          //     "username": "admin@email.com",
+          //     "first_name": "Super",
+          //     "last_name": "User",
+          //     "is_superuser": true
+          //   },
+          //   "active_status": true
+          // }
+          // console.log('--myobj--:', bodyParameters)
+
+          // this.field_validation_data = {
+          //   bill: null,
+          //   type: null,
+          //   material: null,
+          //   submission_date: null,
+          //   work_progress: null,
+          // };
+
+          /* LS config */
+          // console.log('--myArr--:', this.work_submissions)
+          // console.log('--myobj--:', bodyParameters)
+
+          let parseGetDataFromStringfy = JSON.parse(localStorage.getItem('work_submissions') ? localStorage.getItem("work_submissions") : "[]")
+          console.log('--OLD LS--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
+
+          // let pushData = [...parseGetDataFromStringfy, bodyParameters]
+          let pushData = [...parseGetDataFromStringfy, data]
+          localStorage.setItem("work_submissions", JSON.stringify(pushData));
+
+          console.log('--NEW LS--:', typeof pushData, pushData)
+
+          // pushData.filter(item => {
+          //   console.log('--item_id--', item.id)
+          //   console.log('--bill_name--', item.bill.short_bill_name)
+          //   console.log('--type_name--', item.type.short_type_name)
+          //   console.log('--short_material_name--', item.material.short_material_name)
+          //   console.log('--submission_date--', item.submission_date)
+          //   console.log('--work_progress--', item.work_progress)
+          //   console.log('--created_by--', item.created_by.username)
+          // })
+
+          Swal.fire({
+            icon: "success",
+            html:
+                "Work Submitted Successfully!" +
+                "<br><br>" +
+                "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work list when you're back online." +
+                "<br><br>" +
+                '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                "Add Again" +
+                "</button>" +
+                '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                "View List" +
+                "</button> </div>",
+
+            showCancelButton: false,
+            showConfirmButton: false,
+          }).then((res) => {
+            this.isDataSubmit = false;
+            console.log("You are in offline");
+            // console.log(this.field_validation_data);
+          });
+
+          $(".SwalBtn1").on("click", function () {
+            Swal.close();
+          });
+
+          $(".SwalBtn2").on("click", () => {
+            // window.location.assign("view-lists");
+            this.$router.push("view-lists");
+            Swal.close();
+          });
+        }
+      }
+
+      this.bill = null;
+      this.type = null;
+      // this.material.serial_no = null
+      // this.material.unit = null
+      // this.material.quantity = null
+      this.material = null;
+      this.submission_date = null;
+      this.work_progress = null;
     },
 
     /* Deactivate type field if no dependant API data */
     switchTypeField() {
-      if (this.filtered_types_by_bill_id.length > 0) {
-        $(".all-type").removeAttr("disabled")
-      } else {
-        $(".all-type").attr("disabled", "")
-      }
+      // if (this.filtered_types_by_bill_id.length > 0) {
+      //   $(".all-type").removeAttr("disabled");
+      // } else {
+      //   $(".all-type").attr("disabled", "");
+      // }
     },
 
     /* Deactivate material field if no dependant API data */
     switchMaterialField() {
-      if (this.filtered_materials_by_type_id.length > 0) {
-        $(".all-material").removeAttr("disabled")
-      } else {
-        $(".all-material").attr("disabled", "")
-      }
+      // if (this.filtered_materials_by_type_id.length > 0) {
+      //   $(".all-material").removeAttr("disabled");
+      // } else {
+      //   $(".all-material").attr("disabled", "");
+      // }
     },
 
+    test() {
+      //
+    },
   },
 
   created() {
-    this.getAllData()
-    this.todayDate()
-    this.switchTypeField()
-    this.switchMaterialField()
+    this.getAllData();
+    this.todayDate();
+    this.switchTypeField();
+    this.switchMaterialField();
+    this.loadWorkSubmission();
+    this.test();
   },
-
-}// export default
-
+}; // export default
 </script>
-
 
 <!-- css section -->
 <style>
@@ -483,6 +746,10 @@ body {
   width: 100%;
   height: 100%;
   background-color: #fafafa;
+}
+
+.btn:disabled {
+  cursor: no-drop;
 }
 
 .shadow-sm {
@@ -583,6 +850,18 @@ label {
 
   .navbar-nav li {
     margin-left: 15px;
+  }
+
+  .swal2-content {
+    padding: 0 !important;
+  }
+
+  .swal-btn-cotnainer {
+    display: flex;
+  }
+
+  .swal-btn-cotnainer .btn {
+    width: 50%;
   }
 }
 

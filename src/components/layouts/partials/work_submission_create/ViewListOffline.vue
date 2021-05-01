@@ -192,7 +192,7 @@ import CheckOnlineOrOffline from "../onlineStatus/CheckOnlineOrOffline";
 
 export default {
   components: {CheckOnlineOrOffline},
-  name: "WorkSubmissionList",
+  name: "ViewListOffline",
   data() {
     return {
       all_work_submissions: [],
@@ -213,17 +213,6 @@ export default {
     };
   },
   methods: {
-    loadSubmittedData() {
-      if (!window.navigator.onLine === true) {
-        let ls = localStorage.getItem("work_submissions")
-          this.all_work_submissions = JSON.parse(ls);
-          this.isLoading = false;
-    
-      } else {
-        this.loadWorkSubmission()
-      }
-    },
-
     /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
       const token = localStorage.getItem("token");
@@ -250,7 +239,7 @@ export default {
           .then((response) => {
             this.all_work_submissions = response.data.results;
             /* LocalStorage config */
-            localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
+            // localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
             this.isLoading = false;
 
             // Siyam pagination
@@ -265,7 +254,7 @@ export default {
 
       console.log(this.pagination);
 
-      // /* LocalStorage config */
+      /* LocalStorage config */
       // if (localStorage.getItem("work_submissions")) {
       //   this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
       //   this.isLoading = false;
@@ -288,7 +277,6 @@ export default {
         },
       });
       this.loadWorkSubmission();
-      this.loadSubmittedData();
     },
 
     // setPage: function (pageNumber) {

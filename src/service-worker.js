@@ -1,3 +1,6 @@
+// import { CacheOnly, CacheFirst, NetworkOnly, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
+
+
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 
 workbox.setConfig({
@@ -7,10 +10,10 @@ workbox.setConfig({
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 
-/* Testing */
+///////////////////////////////// Form Submission & IDB Queue (workbox-background-sync) ////////////////////////////////
 
-/* workbox-background-sync */
-const bgSyncPlugin = new workbox.backgroundSync.Plugin('queueExample', {
+/* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+const bgSyncPlugin = new workbox.backgroundSync.Plugin('work-submissions', {
     maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 
@@ -22,61 +25,101 @@ workbox.routing.registerRoute(
     'POST'
 );
 
-/* Testing END */
+
+/////////////////////////////////////////////////////// GET APIs ///////////////////////////////////////////////////////
+
+/* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
+workbox.routing.registerRoute(
+    "https://dushanbe-backend-apis.herokuapp.com/api/bills/",
+    new workbox.strategies.NetworkFirst({
+        cacheName: "bills",
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 30 * 60 // 30 minutes
+            })
+        ],
+        method: "GET",
+    })
+);
 
 
-// /* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
-// workbox.routing.registerRoute(
-//     "https://dushanbe-backend-apis.herokuapp.com/api/bills/",
-//     new workbox.strategies.NetworkFirst({
-//         cacheName: "bills",
-//         plugins: [
-//             new workbox.expiration.Plugin({
-//                 maxAgeSeconds: 10 * 60 // 10 minutes
-//             })
-//         ],
-//         method: "GET"
-//     })
-// );
+/* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
+workbox.routing.registerRoute(
+    "https://dushanbe-backend-apis.herokuapp.com/api/types/",
+    new workbox.strategies.NetworkFirst({
+        cacheName: "types",
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 30 * 60 // 30 minutes
+            })
+        ],
+        method: "GET"
+    })
+);
+
+/* Material List (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
+workbox.routing.registerRoute(
+    "https://dushanbe-backend-apis.herokuapp.com/api/materials/",
+    new workbox.strategies.NetworkFirst({
+        cacheName: "materials",
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 30 * 60 // 30 minutes
+            })
+        ],
+        method: "GET"
+    })
+);
+
+/* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+workbox.routing.registerRoute(
+    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+    new workbox.strategies.NetworkFirst({
+        cacheName: "work-submissions-list",
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 30 * 60 // 30 minutes
+            })
+        ],
+        method: "GET",
+        // params: {
+        //     'user_id': parseInt(localStorage.getItem("id"))
+        // },
+        // user_id: request.url.searchParams.get('user_id')
+    })
+);
+
+
+/////////////////////////////////////////////////////// Callback Example /////////////////////////////////////////////////////
+
+// const matchFunction = ({url, event}) => {
+//     // Return true if the route should match
+//     u
+//     return false;
+// };
 //
-// /* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
 // workbox.routing.registerRoute(
-//     "https://dushanbe-backend-apis.herokuapp.com/api/types/",
-//     new workbox.strategies.NetworkFirst({
-//         cacheName: "types",
-//         plugins: [
-//             new workbox.expiration.Plugin({
-//                 maxAgeSeconds: 10 * 60 // 10 minutes
-//             })
-//         ],
-//         method: "GET"
-//     })
+//     matchFunction,
+//     handler
 // );
-//
-// /* Material List (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
-// workbox.routing.registerRoute(
-//     "https://dushanbe-backend-apis.herokuapp.com/api/materials/",
-//     new workbox.strategies.NetworkFirst({
-//         cacheName: "materials",
-//         plugins: [
-//             new workbox.expiration.Plugin({
-//                 maxAgeSeconds: 10 * 60 // 10 minutes
-//             })
-//         ],
-//         method: "GET"
-//     })
-// );
-//
-// /* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+
 // workbox.routing.registerRoute(
 //     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
-//     new workbox.strategies.NetworkFirst({
-//         cacheName: "work-submissions",
-//         plugins: [
-//             new workbox.expiration.Plugin({
-//                 maxAgeSeconds: 10 * 60 // 10 minutes
-//             })
-//         ],
-//         method: "GET"
-//     })
+//     ({url, event}) => {
+//         return caches.open(`${prefix}-${runtime}-${suffix}`).then((cache) => {
+//             const customRequest = `${url.origin}${url.pathname}`;
+//             return cache.match(customRequest).then((cacheRes) => {
+//                 if (cacheRes) {
+//                     return cacheRes;
+//                 }
+//                 return fetch(event.request).then((fetchRes) => {
+//                     cache.put(customRequest, fetchRes.clone());
+//                     return fetchRes;
+//                 });
+//             });
+//         });
+//     }
 // );
+
+
+
