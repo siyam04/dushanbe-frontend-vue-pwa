@@ -554,6 +554,83 @@ export default {
       if (!window.navigator.onLine === true) {
         if (this.bill && this.type && this.material && this.submission_date && this.work_progress) {
 
+          let selectedBill = this.all_bills.filter(item => {
+            return item.id === this.bill
+          })[0]
+          // console.log('--selectedBill--:', selectedBill)
+
+          let selectedType = this.all_types.filter(item => {
+            return item.id === this.type
+          })[0]
+          // console.log('--selectedType--:', selectedType)
+
+          let selectedMaterial = this.all_materials.filter(item => {
+            return item.id === this.material
+          })[0]
+          // console.log('--selectedMaterial--:', selectedMaterial)
+
+          let data = {
+            "bill": selectedBill,
+            "type": selectedType,
+            "material": selectedMaterial,
+            "submission_date": this.submission_date,
+            "work_progress": this.work_progress,
+            "created_by": {
+              "id": localStorage.getItem("id"),
+              "username": localStorage.getItem("username"),
+              "first_name": localStorage.getItem("first_name"),
+              "last_name": localStorage.getItem("last_name"),
+              "is_superuser": localStorage.getItem("superuser_status"),
+            },
+            "active_status": localStorage.getItem("active_status"),
+          }
+
+          console.log('--DATA--:', data)
+
+          // let data = {
+          //   "id": 214,
+          //   "bill": selectedBill,
+          //   "type": {
+          //     "id": 2,
+          //     "bill": {
+          //       "id": 1,
+          //       "short_bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)",
+          //       "bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)"
+          //     },
+          //     "short_type_name": "Manholes and Chambers",
+          //     "type_name": "Manholes and Chambers"
+          //   },
+          //   "material": {
+          //     "id": 32,
+          //     "type": {
+          //       "id": 2,
+          //       "bill": {
+          //         "id": 1,
+          //         "short_bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)",
+          //         "bill_name": "Bill No. 1. Section between TIIK1 - chamber 5/K1 - TIIK2 (length 575m)"
+          //       },
+          //       "short_type_name": "Manholes and Chambers",
+          //       "type_name": "Manholes and Chambers"
+          //     },
+          //     "short_material_name": "Construction of concrete base plate/ blinding for chambers and manholes with thickness of 100mm out of concrete type B3.5, on the prepared gravel platf",
+          //     "serial_no": 20,
+          //     "unit": "m3",
+          //     "quantity": "3.50",
+          //     "material_name": "Construction of concrete base plate/ blinding for chambers and manholes with thickness of 100mm out of concrete type B3.5, on the prepared gravel platform"
+          //   },
+          //   "submission_date": "2021-04-17",
+          //   "work_progress": "100.00",
+          //   "created_by": {
+          //     "id": 1,
+          //     "username": "admin@email.com",
+          //     "first_name": "Super",
+          //     "last_name": "User",
+          //     "is_superuser": true
+          //   },
+          //   "active_status": true
+          // }
+          // console.log('--myobj--:', bodyParameters)
+
           // this.field_validation_data = {
           //   bill: null,
           //   type: null,
@@ -567,12 +644,13 @@ export default {
           // console.log('--myobj--:', bodyParameters)
 
           let parseGetDataFromStringfy = JSON.parse(localStorage.getItem('work_submissions') ? localStorage.getItem("work_submissions") : "[]")
-          // console.log('--parseGetDataFromStringfy--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
+          console.log('--OLD LS--:', typeof parseGetDataFromStringfy, parseGetDataFromStringfy)
 
-          let pushData = [...parseGetDataFromStringfy, bodyParameters]
+          // let pushData = [...parseGetDataFromStringfy, bodyParameters]
+          let pushData = [...parseGetDataFromStringfy, data]
           localStorage.setItem("work_submissions", JSON.stringify(pushData));
 
-          // console.log('--pushData--:', typeof pushData, pushData)
+          console.log('--NEW LS--:', typeof pushData, pushData)
 
           // pushData.filter(item => {
           //   console.log('--item_id--', item.id)
@@ -610,8 +688,10 @@ export default {
             Swal.close();
           });
 
-          $(".SwalBtn2").on("click", function () {
-            window.location.assign("view-lists");
+          $(".SwalBtn2").on("click", () => {
+            // window.location.assign("view-lists");
+            this.$router.push("view-lists");
+            Swal.close();
           });
         }
       }

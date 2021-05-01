@@ -213,6 +213,17 @@ export default {
     };
   },
   methods: {
+    loadSubmittedData() {
+      if (!window.navigator.onLine === true) {
+        let ls = localStorage.getItem("work_submissions")
+          this.all_work_submissions = JSON.parse(ls);
+          this.isLoading = false;
+    
+      } else {
+        this.loadWorkSubmission()
+      }
+    },
+
     /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
       const token = localStorage.getItem("token");
@@ -254,11 +265,11 @@ export default {
 
       console.log(this.pagination);
 
-      /* LocalStorage config */
-      if (localStorage.getItem("work_submissions")) {
-        this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
-        this.isLoading = false;
-      }
+      // /* LocalStorage config */
+      // if (localStorage.getItem("work_submissions")) {
+      //   this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
+      //   this.isLoading = false;
+      // }
 
     },
 
@@ -277,6 +288,7 @@ export default {
         },
       });
       this.loadWorkSubmission();
+      this.loadSubmittedData();
     },
 
     // setPage: function (pageNumber) {
