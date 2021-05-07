@@ -27,7 +27,7 @@ export const getRequest = (url) => {
 export const postRequest = function (url, data = {}) {
     return new Promise((resolve) => {
         let header = {headers: {}}
-        let token = localStorage.getItem("token")
+        let token = localStorage.getItem("token") ;
         if (token) {
             header.headers['Authorization'] = `token ${token}`
         }
