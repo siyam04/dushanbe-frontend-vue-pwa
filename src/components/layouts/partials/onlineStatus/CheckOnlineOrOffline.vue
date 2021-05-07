@@ -26,14 +26,11 @@ export default {
     };
   },
   methods: {
-    onlineStatus() {
-      // this.isOnline = window.navigator.onLine;
-
-      window.navigator.onLine ? (this.isOnline = true) : this.isOnline;
-    },
   },
   created() {
-    this.onlineStatus();
+    if(window.navigator.onLine) this.isOnline = true ;
+    window.addEventListener('online',  ()=>{  this.isOnline = true });
+    window.addEventListener('offline', ()=>{ this.isOnline = false });
   },
 };
 </script>

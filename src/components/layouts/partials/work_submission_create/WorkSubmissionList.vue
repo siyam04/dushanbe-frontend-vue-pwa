@@ -226,6 +226,16 @@ export default {
 
     /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
+      if(!this.isOnline){
+
+        if(localStorage.getItem("work_submissions")){
+           this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
+        }
+
+        this.isLoading = false;
+        return true;
+      }
+
       const token = localStorage.getItem("token");
       const user_id = parseInt(localStorage.getItem("id"));
 
@@ -263,7 +273,7 @@ export default {
             console.log(err);
           });
 
-      console.log(this.pagination);
+    //  console.log(this.pagination);
 
       // /* LocalStorage config */
       // if (localStorage.getItem("work_submissions")) {
@@ -301,6 +311,10 @@ export default {
   },
 
   created() {
+    if(window.navigator.onLine) this.isOnline = true ;
+    window.addEventListener('online',  ()=>{  this.isOnline = true });
+    window.addEventListener('offline', ()=>{ this.isOnline = false });
+
     this.loadWorkSubmission();
   },
 

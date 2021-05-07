@@ -313,7 +313,7 @@
 import $ from "jquery";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {getRequest} from "@/plugins/requestHandler";
+import {getRequest, postRequest} from "@/plugins/requestHandler";
 
 // import Select2Component
 // import Select2 from "vue3-select2-component";
@@ -556,17 +556,17 @@ export default {
 
           let selectedBill = this.all_bills.filter(item => {
             return item.id === this.bill
-          })[0]
+          })[0];
           // console.log('--selectedBill--:', selectedBill)
 
           let selectedType = this.all_types.filter(item => {
             return item.id === this.type
-          })[0]
+          })[0];
           // console.log('--selectedType--:', selectedType)
 
           let selectedMaterial = this.all_materials.filter(item => {
             return item.id === this.material
-          })[0]
+          })[0];
           // console.log('--selectedMaterial--:', selectedMaterial)
 
           let data = {
@@ -583,7 +583,15 @@ export default {
               "is_superuser": localStorage.getItem("superuser_status"),
             },
             "active_status": localStorage.getItem("active_status"),
+          };
+
+          let oldData = [] ;
+          if( localStorage.getItem("work_submissions")){
+            oldData = JSON.parse(localStorage.getItem("work_submissions"))
           }
+
+          oldData.unshift(data);
+          localStorage.setItem("work_submissions", JSON.stringify(oldData));
 
           console.log('--DATA--:', data)
 
@@ -648,7 +656,7 @@ export default {
 
           // let pushData = [...parseGetDataFromStringfy, bodyParameters]
           let pushData = [...parseGetDataFromStringfy, data]
-          localStorage.setItem("work_submissions", JSON.stringify(pushData));
+        //  localStorage.setItem("work_submissions", JSON.stringify(pushData));
 
           console.log('--NEW LS--:', typeof pushData, pushData)
 
@@ -669,10 +677,10 @@ export default {
                 "<br><br>" +
                 "You're offline. Work you've submitted is processing in the background & will be add to SharePoint including work list when you're back online." +
                 "<br><br>" +
-                '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
+                '<div class="swal-btn-cotnainer"> <button type="button" class="btn btn-secondary SwalBtn1 customSwalBtn">' +
                 "Add Again" +
                 "</button>" +
-                '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                '<button type="button" class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
                 "View List" +
                 "</button> </div>",
 
