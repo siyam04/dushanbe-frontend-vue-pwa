@@ -387,7 +387,7 @@
                 } else {
                     this.all_bills = await getRequest("bills/");
                     if (this.all_bills) {
-                        localStorage.setItem("bills", JSON.stringify(bills));
+                        localStorage.setItem("bills", JSON.stringify(this.all_bills));
                     }
                 }
             },
@@ -423,23 +423,26 @@
             },
             setSubmittedListItem() {
                 let selectedBill = this.all_bills.filter(item => {
-                    return item.id === this.bill
+                    // return item.id === this.bill
+                    return item.id === this.work_data.bill_id
                 })[0];
 
                 let selectedType = this.all_types.filter(item => {
-                    return item.id === this.type
+                    // return item.id === this.type
+                    return item.id === this.work_data.type_id
                 })[0];
 
                 let selectedMaterial = this.materials.filter(item => {
-                    return item.id === this.material
+                    // return item.id === this.material
+                    return item.id === this.work_data.material_id
                 })[0];
 
                 let data = {
                     "bill": selectedBill,
                     "type": selectedType,
                     "material": selectedMaterial,
-                    "submission_date": this.submission_date,
-                    "work_progress": this.work_progress,
+                    "submission_date": this.work_data.submission_date,
+                    "work_progress": this.work_data.work_progress,
                     "created_by": {
                         "id": localStorage.getItem("id"),
                         "username": localStorage.getItem("username"),
@@ -484,7 +487,7 @@
                 };
 
                 this.isDataSubmit = true;
-                let submit = await postRequest('work-submissions', data);
+                let submit = await postRequest('work-submissions/', data);
                 if (submit) {
                     this.isDataSubmit = false;
                     this.fireSuccessMessage(true);
@@ -521,7 +524,8 @@
                 });
 
                 $(".SwalBtn2").on("click", () => {
-                    this.$route.push({path: "/work-submission-list"});
+                    this.$router.push({path: "/work-submission-list"});
+                    Swal.close();
                 });
             },
         },

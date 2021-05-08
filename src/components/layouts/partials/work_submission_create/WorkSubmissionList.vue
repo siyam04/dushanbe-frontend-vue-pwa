@@ -60,9 +60,10 @@
                 :aria-expanded="index < 1 ? true : false"
                 :aria-controls="'collapse_' + work.id"
             >
-              <span>{{
+              <span v-if="work.bill">{{
                   // index + 1 + ". " + work.bill.short_bill_name + "..."
-                  work.id + ". " + work.bill.bill_name + "..."
+                  // work.id + ". " + work.bill.bill_name + "..."
+                  work.bill.bill_name
                 }}</span>
 
               <span>{{ work.submission_date }}</span>
@@ -80,16 +81,16 @@
             <div class="outer-box type-and-user">
               <div class="inner-box">
                 <small>Serial No</small>
-                <h5>{{ work.material.serial_no }}</h5>
+                <h5 v-if="work.material">{{ work.material.serial_no }}</h5>
               </div>
 
               <div class="inner-box">
                 <small>Unit</small>
-                <h5 class="text">{{ work.material.unit }}</h5>
+                <h5 class="text" v-if="work.material">{{ work.material.unit }}</h5>
               </div>
               <div class="inner-box">
                 <small>Quantity</small>
-                <h5>{{ work.material.quantity }}</h5>
+                <h5 v-if="work.material">{{ work.material.quantity }}</h5>
               </div>
               <div class="inner-box">
                 <small>Work Progress</small>
@@ -103,7 +104,7 @@
 
               <div class="inner-box">
                 <small>Type</small>
-                <h5>{{ work.type.type_name }}</h5>
+                <h5 v-if="work.type">{{ work.type.type_name }}</h5>
               </div>
             </div>
 
@@ -115,7 +116,7 @@
             <div class="dropdown-divider mt-3"></div>
             <div class="outer-box">
               <h5>Material</h5>
-              <p class="mb-0">{{ work.material.material_name }}</p>
+              <p class="mb-0" v-if="work.material">{{ work.material.material_name }}</p>
             </div>
 
             <!-- <div class="dropdown-divider my-3"></div>
@@ -196,7 +197,7 @@ export default {
   data() {
     return {
       all_work_submissions: [],
-      url: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+      url: "http://www.dushanbe.apis.lp-report.com/api/work-submissions/",
       currentPage: 1,
       // itemPerPage: 5,
       isLoading: true,
@@ -224,7 +225,7 @@ export default {
       }
     },
 
-    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+    /* Work Submission (GET): http://www.dushanbe.apis.lp-report.com/api/work-submissions/ */
     loadWorkSubmission() {
       if(!this.isOnline){
 
@@ -316,6 +317,7 @@ export default {
     window.addEventListener('offline', ()=>{ this.isOnline = false });
 
     this.loadWorkSubmission();
+
   },
 
   // computed: {
