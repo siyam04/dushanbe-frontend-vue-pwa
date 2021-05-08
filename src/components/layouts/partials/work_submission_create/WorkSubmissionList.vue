@@ -4,12 +4,12 @@
   <div class="main-header bg-white shadow-sm px-3 py-2">
     <div class="container">
       <div
-          class="header-box bg-white d-flex align-items-center justify-content-between"
+        class="header-box bg-white d-flex align-items-center justify-content-between"
       >
         <div class="header d-flex align-items-center">
           <img
-              src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
-              alt="Dushanbe"
+            src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
+            alt="Dushanbe"
           />
           <h1 class="mb-0">Works List</h1>
         </div>
@@ -24,16 +24,16 @@
     </div>
   </div>
 
-  <CheckOnlineOrOffline class="mb-4"/>
+  <CheckOnlineOrOffline class="mb-4" />
 
   <div class="container mb-4">
     <!-- Start Data Loader -->
     <div v-if="isLoading" class="loading-container">
       <div class="d-flex align-items-center">
         <div
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
         ></div>
         <h6 class="ml-2 mb-0">Loading...</h6>
       </div>
@@ -42,29 +42,29 @@
 
     <div class="accordion mt-4" id="accordionExample">
       <div
-          class="card"
-          v-for="(work, index) in all_work_submissions
+        class="card"
+        v-for="(work, index) in all_work_submissions
           .slice
           // pageStart,
           // pageStart + itemPerPage
           ()"
-          :key="work.id"
+        :key="work.id"
       >
         <div class="card-header" :id="'heading_' + work.id">
           <h2 class="mb-0">
             <button
-                class="btn btn-link"
-                type="button"
-                data-toggle="collapse"
-                :data-target="'#collapse_' + work.id"
-                :aria-expanded="index < 1 ? true : false"
-                :aria-controls="'collapse_' + work.id"
+              class="btn btn-link"
+              type="button"
+              data-toggle="collapse"
+              :data-target="'#collapse_' + work.id"
+              :aria-expanded="index < 1 ? true : false"
+              :aria-controls="'collapse_' + work.id"
             >
-              <span>{{
-                  // index + 1 + ". " + work.bill.short_bill_name + "..."
-                  // work.id + ". " + work.bill.bill_name + "..."
-                  work.bill.bill_name + "..."
-                }}</span>
+              <span v-if="work.bill">{{
+                // index + 1 + ". " + work.bill.short_bill_name + "..."
+                // work.id + ". " + work.bill.bill_name + "..."
+                work.bill.bill_name
+              }}</span>
 
               <span>{{ work.submission_date }}</span>
             </button>
@@ -72,25 +72,27 @@
         </div>
 
         <div
-            :id="'collapse_' + work.id"
-            :class="index < 1 ? 'collapse show' : 'collapse'"
-            :aria-labelledby="'heading_' + work.id"
-            data-parent="#accordionExample"
+          :id="'collapse_' + work.id"
+          :class="index < 1 ? 'collapse show' : 'collapse'"
+          :aria-labelledby="'heading_' + work.id"
+          data-parent="#accordionExample"
         >
           <div class="card-body border-top">
             <div class="outer-box type-and-user">
               <div class="inner-box">
                 <small>Serial No</small>
-                <h5>{{ work.material.serial_no }}</h5>
+                <h5 v-if="work.material">{{ work.material.serial_no }}</h5>
               </div>
 
               <div class="inner-box">
                 <small>Unit</small>
-                <h5 class="text">{{ work.material.unit }}</h5>
+                <h5 class="text" v-if="work.material">
+                  {{ work.material.unit }}
+                </h5>
               </div>
               <div class="inner-box">
                 <small>Quantity</small>
-                <h5>{{ work.material.quantity }}</h5>
+                <h5 v-if="work.material">{{ work.material.quantity }}</h5>
               </div>
               <div class="inner-box">
                 <small>Work Progress</small>
@@ -104,7 +106,7 @@
 
               <div class="inner-box">
                 <small>Type</small>
-                <h5>{{ work.type.type_name }}</h5>
+                <h5 v-if="work.type">{{ work.type.type_name }}</h5>
               </div>
             </div>
 
@@ -116,7 +118,9 @@
             <div class="dropdown-divider mt-3"></div>
             <div class="outer-box">
               <h5>Material</h5>
-              <p class="mb-0">{{ work.material.material_name }}</p>
+              <p class="mb-0" v-if="work.material">
+                {{ work.material.material_name }}
+              </p>
             </div>
 
             <!-- <div class="dropdown-divider my-3"></div>
@@ -159,8 +163,8 @@
 
     <!-- Siyam Pagination -->
     <div
-        class="pagination d-flex justify-content-between my-3"
-        v-if="pagination.count"
+      class="pagination d-flex justify-content-between my-3"
+      v-if="pagination.count"
     >
       <div class="">
         <p class="mb-0">
@@ -171,7 +175,7 @@
       <ul class="lists-group d-flex mb-0">
         <li :class="{ disabled: !pagination.previous }" class="page-item">
           <a href="#" class="btn" v-on:click="setPage(pagination.previous)"
-          >Previous</a
+            >Previous</a
           >
         </li>
 
@@ -188,16 +192,16 @@
 <!-- script section -->
 <script>
 import axios from "axios";
-import {getRequest} from "@/plugins/requestHandler";
+import { getRequest } from "@/plugins/requestHandler";
 import CheckOnlineOrOffline from "../onlineStatus/CheckOnlineOrOffline";
 
 export default {
-  components: {CheckOnlineOrOffline},
+  components: { CheckOnlineOrOffline },
   name: "WorkSubmissionList",
   data() {
     return {
       all_work_submissions: [],
-      url: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+      url: "http://www.dushanbe.apis.lp-report.com/api/work-submissions/",
       currentPage: 1,
       // itemPerPage: 5,
       isLoading: true,
@@ -214,8 +218,29 @@ export default {
     };
   },
   methods: {
-    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+    loadSubmittedData() {
+      if (!window.navigator.onLine === true) {
+        let ls = localStorage.getItem("work_submissions");
+        this.all_work_submissions = JSON.parse(ls);
+        this.isLoading = false;
+      } else {
+        this.loadWorkSubmission();
+      }
+    },
+
+    /* Work Submission (GET): http://www.dushanbe.apis.lp-report.com/api/work-submissions/ */
     loadWorkSubmission() {
+      if (!this.isOnline) {
+        if (localStorage.getItem("work_submissions")) {
+          this.all_work_submissions = JSON.parse(
+            localStorage.getItem("work_submissions")
+          );
+        }
+
+        this.isLoading = false;
+        return true;
+      }
+
       const token = localStorage.getItem("token");
       const user_id = parseInt(localStorage.getItem("id"));
 
@@ -225,42 +250,44 @@ export default {
       };
 
       axios
-          .get(this.url, {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-            params: {
-              user_id,
-              page: this.$route.query.page, // for pagination
-
-              // Siyam pagination
-              queryParam,
-            },
-          })
-          .then((response) => {
-            this.all_work_submissions = response.data.results;
-            /* LocalStorage config */
-            localStorage.setItem("work_submissions", JSON.stringify(this.all_work_submissions));
-            this.isLoading = false;
+        .get(this.url, {
+          headers: {
+            Authorization: `token ${token}`,
+          },
+          params: {
+            user_id,
+            page: this.$route.query.page, // for pagination
 
             // Siyam pagination
-            this.pagination.count = response.data.count;
-            this.pagination.next = response.data.next;
-            this.pagination.previous = response.data.previous;
-            this.pagination.showing = response.data.results.length;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+            queryParam,
+          },
+        })
+        .then((response) => {
+          this.all_work_submissions = response.data.results;
+          /* LocalStorage config */
+          localStorage.setItem(
+            "work_submissions",
+            JSON.stringify(this.all_work_submissions)
+          );
+          this.isLoading = false;
 
-      console.log(this.pagination);
+          // Siyam pagination
+          this.pagination.count = response.data.count;
+          this.pagination.next = response.data.next;
+          this.pagination.previous = response.data.previous;
+          this.pagination.showing = response.data.results.length;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
-      /* LocalStorage config */
-      if (localStorage.getItem("work_submissions")) {
-        this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
-        this.isLoading = false;
-      }
+      //  console.log(this.pagination);
 
+      // /* LocalStorage config */
+      // if (localStorage.getItem("work_submissions")) {
+      //   this.all_work_submissions = JSON.parse(localStorage.getItem("work_submissions"));
+      //   this.isLoading = false;
+      // }
     },
 
     // Siyam pagination
@@ -278,6 +305,7 @@ export default {
         },
       });
       this.loadWorkSubmission();
+      this.loadSubmittedData();
     },
 
     // setPage: function (pageNumber) {
@@ -290,6 +318,14 @@ export default {
   },
 
   created() {
+    if (window.navigator.onLine) this.isOnline = true;
+    window.addEventListener("online", () => {
+      this.isOnline = true;
+    });
+    window.addEventListener("offline", () => {
+      this.isOnline = false;
+    });
+
     this.loadWorkSubmission();
   },
 

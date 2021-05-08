@@ -10,7 +10,7 @@ export const getRequest = (url) => {
         if (token) {
             header.headers['Authorization'] = 'token ' + token
         }
-        let baseURL = "https://dushanbe-backend-apis.herokuapp.com/api/"
+        let baseURL = "http://www.dushanbe.apis.lp-report.com/api/"
         axios.get(baseURL + url, {
             headers: {Authorization: `token ${token}`},
         }).then(response => {
@@ -27,11 +27,11 @@ export const getRequest = (url) => {
 export const postRequest = function (url, data = {}) {
     return new Promise((resolve) => {
         let header = {headers: {}}
-        let token = localStorage.getItem("token")
+        let token = localStorage.getItem("token") ;
         if (token) {
             header.headers['Authorization'] = `token ${token}`
         }
-        let baseURL = "https://dushanbe-backend-apis.herokuapp.com/api/"
+        let baseURL = "http://www.dushanbe.apis.lp-report.com/api/"
         axios.post(baseURL + url,
             data,
             header
