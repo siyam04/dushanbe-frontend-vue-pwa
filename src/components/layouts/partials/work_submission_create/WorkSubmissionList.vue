@@ -62,7 +62,8 @@
             >
               <span>{{
                   // index + 1 + ". " + work.bill.short_bill_name + "..."
-                  work.id + ". " + work.bill.bill_name + "..."
+                  // work.id + ". " + work.bill.bill_name + "..."
+                  work.bill.bill_name + "..."
                 }}</span>
 
               <span>{{ work.submission_date }}</span>

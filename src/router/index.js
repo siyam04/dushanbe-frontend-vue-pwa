@@ -8,10 +8,6 @@ import WorkSubmissionCreate from "@/views/WorkSubmissionCreate";
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-
-
-
-
 /* check connectivity first */
 // router_middlewares.app_mode()
 
