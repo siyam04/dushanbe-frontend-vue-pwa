@@ -248,11 +248,12 @@
                     }"
                     class="form-control"
                     id="work_progress"
-                    min="0"
                     placeholder="0"
+                    type="text"
+                    min="0"
                     step=".01"
-                    type="number"
                     v-model="work_data.work_progress"
+                    maxlength="6"
                   />
 
                   <!--Error Handling-->
@@ -459,12 +460,13 @@ export default {
       if (
         !this.work_data.bill_id ||
         !this.work_data.type_id ||
-        !this.work_data.material_id
+        !this.work_data.material_id ||
+        !this.work_data.work_progress
       ) {
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
+          title: "Oops!",
+          text: "Please Select Valid Data...",
         });
         return false;
       }
@@ -485,17 +487,22 @@ export default {
 
       this.isDataSubmit = true;
       let submit = await postRequest("work-submissions/", data);
+
       if (submit) {
         this.isDataSubmit = false;
         this.fireSuccessMessage(true);
       } else {
+        this.isDataSubmit = false;
+
         if (window.navigator.onLine) {
-          this.field_validation_data = error.response.data;
+          // this.field_validation_data = error.response.data;
+          alert("Error found!");
         } else {
           this.setSubmittedListItem();
           this.fireSuccessMessage(false);
         }
       }
+
       this.work_data = {
         submission_date: new Date().toISOString().substr(0, 10),
       };
@@ -503,7 +510,7 @@ export default {
     fireSuccessMessage(online) {
       let message = online
         ? "Work Submitted Successfully!"
-        : "Work Submission processing!";
+        : "Work Submission Successfully! & Processing in the Background...";
       Swal.fire({
         icon: "success",
         html: `${message}
