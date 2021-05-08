@@ -606,12 +606,14 @@ export default {
             // console.log(this.field_validation_data);
           });
 
-          $(".SwalBtn1").on("click", function () {
+          $(".SwalBtn1").on("click", () => {
             Swal.close();
           });
 
-          $(".SwalBtn2").on("click", function () {
-            window.location.assign("view-lists");
+          $(".SwalBtn2").on("click", () => {
+            // window.location.assign("view-lists");
+            // this.$route.push({name: "/work-submission-list"});
+            this.$router.push({ name: 'WorkSubmissionList' })
           });
         }
       }
