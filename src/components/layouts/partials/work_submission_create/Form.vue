@@ -594,8 +594,8 @@ export default {
                 '<div class="swal-btn-cotnainer"> <button  class="btn btn-secondary SwalBtn1 customSwalBtn">' +
                 "Add Again" +
                 "</button>" +
-                '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
-                "View List" +
+                // '<button  class="btn btn-success ml-2 SwalBtn2 customSwalBtn">' +
+                // "View List" +
                 "</button> </div>",
 
             showCancelButton: false,
@@ -606,15 +606,15 @@ export default {
             // console.log(this.field_validation_data);
           });
 
-          $(".SwalBtn1").on("click", () => {
+          $(".SwalBtn1").on("click", function () {
             Swal.close();
+            console.log("SwalBtn1");
           });
+          // $(".SwalBtn2").on("click", function () {
+          //   console.log("SwalBtn2");
+          //   window.location.assign("work-submission-list");
+          // });
 
-          $(".SwalBtn2").on("click", () => {
-            // window.location.assign("view-lists");
-            // this.$route.push({name: "/work-submission-list"});
-            this.$router.push({ name: 'WorkSubmissionList' })
-          });
         }
       }
 
