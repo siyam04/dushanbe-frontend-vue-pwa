@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.b52d36decffa0f890b51212abb43c865.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.b5f6ece9004811dac8df42bcf174b03c.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 // import { CacheOnly, CacheFirst, NetworkOnly, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 

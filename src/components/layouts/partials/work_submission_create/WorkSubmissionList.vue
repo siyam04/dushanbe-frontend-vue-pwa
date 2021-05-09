@@ -201,7 +201,7 @@ export default {
   data() {
     return {
       all_work_submissions: [],
-      url: "http://www.dushanbe.apis.lp-report.com/api/work-submissions/",
+      url: "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
       currentPage: 1,
       // itemPerPage: 5,
       isLoading: true,
@@ -228,7 +228,7 @@ export default {
       }
     },
 
-    /* Work Submission (GET): http://www.dushanbe.apis.lp-report.com/api/work-submissions/ */
+    /* Work Submission (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
     loadWorkSubmission() {
       if (!this.isOnline) {
         if (localStorage.getItem("work_submissions")) {

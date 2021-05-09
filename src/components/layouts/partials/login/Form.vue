@@ -129,13 +129,13 @@ export default {
   }, // data
 
   methods: {
-    /* Login (POST): http://www.dushanbe.apis.lp-report.com/api/login/ */
+    /* Login (POST): https://dushanbe-backend-apis.herokuapp.com/api/login/ */
     loginSubmit() {
       this.isDataSubmit = true;
       // console.log("clicked");
 
       axios
-        .post("http://www.dushanbe.apis.lp-report.com/api/login/", {
+        .post("https://dushanbe-backend-apis.herokuapp.com/api/login/", {
           username: this.username,
           password: this.password,
         })

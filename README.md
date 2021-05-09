@@ -1,8 +1,8 @@
-# dushanbe-frontend-vue-pwa
+# Dushanbe Work Submissions
 
 ## Live
 ```
-https://dushanbe-frontend-vue-pwa.herokuapp.com/
+https://dushanbe.lp-report.com/
 ```
 
 ## Project setup

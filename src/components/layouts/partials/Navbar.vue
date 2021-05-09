@@ -59,7 +59,7 @@ export default {
   },
 
   methods: {
-    /* Logout (GET): http://www.dushanbe.apis.lp-report.com/api/logout/ */
+    /* Logout (GET): https://dushanbe-backend-apis.herokuapp.com/api/logout/ */
     logout() {
       getRequest("logout/");
       localStorage.removeItem("token");
