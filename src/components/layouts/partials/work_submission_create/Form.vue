@@ -465,7 +465,7 @@ export default {
       ) {
         Swal.fire({
           icon: "error",
-          title: "Oops!",
+          title: "OOPS!",
           text: "Please Select Valid Data...",
         });
         return false;
@@ -496,7 +496,7 @@ export default {
 
         if (window.navigator.onLine) {
           // this.field_validation_data = error.response.data;
-          alert("Error found!");
+          alert("Error Found!");
         } else {
           this.setSubmittedListItem();
           this.fireSuccessMessage(false);
@@ -510,7 +510,7 @@ export default {
     fireSuccessMessage(online) {
       let message = online
           ? "Work Submitted Successfully!"
-          : "Work Submission Successfully! & Processing in the Background...";
+          : "Work Submitted Successfully & Processing in the Background...";
       Swal.fire({
         icon: "success",
         html: `${message}

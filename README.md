@@ -1,11 +1,18 @@
 # Dushanbe Work Submissions
 
-## Live
+* Version 1.0 (23/05/2021)
+* Developed by VueJS 3.0 (PWA)
+
+### Live
 ```
 https://dushanbe.lp-report.com/
 ```
+### Local
+```
+http://localhost:5000/
+```
 
-## Project setup
+### Project setup
 ```
 npm install
 ```
@@ -23,5 +30,3 @@ npm run build
 npm run build --watch
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
