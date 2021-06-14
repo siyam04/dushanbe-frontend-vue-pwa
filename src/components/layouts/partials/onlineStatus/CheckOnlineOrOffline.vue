@@ -4,13 +4,13 @@
     <div v-if="isOnline">
       <div class="alert alert-success text-small" role="alert">
         You are in
-        <strong>Online</strong>.
+        <strong>Online mode</strong>.
       </div>
     </div>
     <div v-else>
       <div class="alert alert-danger" role="alert">
         You are in
-        <a href="#" class="alert-link">Offline</a>.
+        <a href="#" class="alert-link">Offline mode</a>.
       </div>
     </div>
   </div>
@@ -25,12 +25,15 @@ export default {
       isOnline: false,
     };
   },
-  methods: {
-  },
+  methods: {},
   created() {
-    if(window.navigator.onLine) this.isOnline = true ;
-    window.addEventListener('online',  ()=>{  this.isOnline = true });
-    window.addEventListener('offline', ()=>{ this.isOnline = false });
+    if (window.navigator.onLine) this.isOnline = true;
+    window.addEventListener("online", () => {
+      this.isOnline = true;
+    });
+    window.addEventListener("offline", () => {
+      this.isOnline = false;
+    });
   },
 };
 </script>
