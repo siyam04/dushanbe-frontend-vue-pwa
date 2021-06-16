@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.b52d36decffa0f890b51212abb43c865.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.0235c27baa7ae7f5095843e11d8ea6fc.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 // import { CacheOnly, CacheFirst, NetworkOnly, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 
@@ -15,12 +15,13 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 ///////////////////////////////// Form Submission & IDB Queue (workbox-background-sync) ////////////////////////////////
 
 /* Work Submission (POST): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+/* Work Submission (POST): https://dushanbe.apis.lp-report.com/api/work-submissions/ */
 const bgSyncPlugin = new workbox.backgroundSync.Plugin('work-submissions', {
     maxRetentionTime: 24 * 60 // Retry for max of 24 Hours (specified in minutes)
 });
 
 workbox.routing.registerRoute(
-    'https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/',
+    'https://dushanbe.apis.lp-report.com/api/work-submissions/',
     new workbox.strategies.NetworkOnly({
         plugins: [bgSyncPlugin]
     }),
@@ -30,9 +31,9 @@ workbox.routing.registerRoute(
 
 /////////////////////////////////////////////////////// GET APIs ///////////////////////////////////////////////////////
 
-/* Bill List (GET): https://dushanbe-backend-apis.herokuapp.com/api/bills/ */
+/* Bill List (GET): https://dushanbe.apis.lp-report.com/api/bills/ */
 workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/bills/",
+    "https://dushanbe.apis.lp-report.com/api/bills/",
     new workbox.strategies.NetworkFirst({
         cacheName: "bills",
         plugins: [
@@ -45,9 +46,9 @@ workbox.routing.registerRoute(
 );
 
 
-/* Type List (GET): https://dushanbe-backend-apis.herokuapp.com/api/types/ */
+/* Type List (GET): https://dushanbe.apis.lp-report.com/api/types/ */
 workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/types/",
+    "https://dushanbe.apis.lp-report.com/api/types/",
     new workbox.strategies.NetworkFirst({
         cacheName: "types",
         plugins: [
@@ -59,9 +60,9 @@ workbox.routing.registerRoute(
     })
 );
 
-/* Material List (GET): https://dushanbe-backend-apis.herokuapp.com/api/materials/ */
+/* Material List (GET): https://dushanbe.apis.lp-report.com/api/materials/ */
 workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/materials/",
+    "https://dushanbe.apis.lp-report.com/api/materials/",
     new workbox.strategies.NetworkFirst({
         cacheName: "materials",
         plugins: [
@@ -73,9 +74,9 @@ workbox.routing.registerRoute(
     })
 );
 
-/* Work Submission List (GET): https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/ */
+/* Work Submission List (GET): https://dushanbe.apis.lp-report.com/api/work-submissions/ */
 workbox.routing.registerRoute(
-    "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+    "https://dushanbe.apis.lp-report.com/api/work-submissions/",
     new workbox.strategies.NetworkFirst({
         cacheName: "work-submissions-list",
         plugins: [
@@ -106,7 +107,7 @@ workbox.routing.registerRoute(
 // );
 
 // workbox.routing.registerRoute(
-//     "https://dushanbe-backend-apis.herokuapp.com/api/work-submissions/",
+//     "https://dushanbe.apis.lp-report.com/api/work-submissions/",
 //     ({url, event}) => {
 //         return caches.open(`${prefix}-${runtime}-${suffix}`).then((cache) => {
 //             const customRequest = `${url.origin}${url.pathname}`;
