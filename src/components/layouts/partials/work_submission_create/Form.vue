@@ -6,18 +6,18 @@
     <div class="container">
       <!-- form start -->
       <form
-          @submit.prevent="submitBillSubmissionForm"
-          class="form rounded bg-white"
-          id="form_reset"
-          name="bill_form"
+        @submit.prevent="submitBillSubmissionForm"
+        class="form rounded bg-white"
+        id="form_reset"
+        name="bill_form"
       >
         <!-- logo & heading -->
         <div class="card-header bg-white">
           <div class="header d-flex align-items-center">
             <router-link :to="{ path: '/work-submission-create' }">
               <img
-                  alt="Dushanbe"
-                  src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
+                alt="Dushanbe"
+                src="https://ludwigpfeiffer.com/wp-content/themes/Ludwig-Pfeiffer_Theme/img/logo.png"
               />
             </router-link>
             <h1 class="">Work Submission | Dushanbe</h1>
@@ -41,32 +41,32 @@
                         /> -->
 
             <select
-                :class="{
+              :class="{
                 'is-invalid':
                   field_validation_data && field_validation_data.bill,
               }"
-                class="custom-select"
-                v-model="work_data.bill_id"
+              class="custom-select"
+              v-model="work_data.bill_id"
             >
               <option disabled selected>select bill</option>
               <option :key="bill.id" :value="bill.id" v-for="bill in all_bills">
                 <!--{{ bill.short_bill_name }}-->
-                {{ bill.bill_name.substr(0, 50) + "..." }}
+                {{ bill.bill_name }}
               </option>
             </select>
 
             <!-- bill error handling-->
             <div
-                :class="{
+              :class="{
                 'invalid-feedback':
                   field_validation_data && field_validation_data.bill,
               }"
-                v-if="field_validation_data && field_validation_data.bill"
+              v-if="field_validation_data && field_validation_data.bill"
             >
               {{
                 !isOnline
-                    ? field_validation_data.Bill
-                    : field_validation_data.bill[0]
+                  ? field_validation_data.Bill
+                  : field_validation_data.bill[0]
               }}
             </div>
           </div>
@@ -76,33 +76,33 @@
           <div class="form-group">
             <label>Type</label>
             <select
-                :class="
+              :class="
                 field_validation_data && field_validation_data.type
                   ? 'custom-select is-invalid'
                   : 'custom-select all-type'
               "
-                :disabled="!billTypes.length"
-                v-model="work_data.type_id"
+              :disabled="!billTypes.length"
+              v-model="work_data.type_id"
             >
               <option disabled selected>Select</option>
               <option :key="type.id" :value="type.id" v-for="type in billTypes">
                 <!--{{ type.short_type_name }}-->
-                {{ type.type_name.substr(0, 50) + "..." }}
+                {{ type.type_name }}
               </option>
             </select>
 
             <!-- type error handling-->
             <div
-                :class="{
+              :class="{
                 'invalid-feedback':
                   field_validation_data && field_validation_data.type,
               }"
-                v-if="field_validation_data && field_validation_data.type"
+              v-if="field_validation_data && field_validation_data.type"
             >
               {{
                 !isOnline
-                    ? field_validation_data.Type
-                    : field_validation_data.type[0]
+                  ? field_validation_data.Type
+                  : field_validation_data.type[0]
               }}
             </div>
           </div>
@@ -112,37 +112,37 @@
           <div class="form-group">
             <label>Material</label>
             <select
-                :class="
+              :class="
                 field_validation_data && field_validation_data.material
                   ? 'custom-select is-invalid'
                   : 'custom-select all-material'
               "
-                :disabled="!typeMaterials.length"
-                @change="setMaterialData()"
-                v-model="work_data.material_id"
+              :disabled="!typeMaterials.length"
+              @change="setMaterialData()"
+              v-model="work_data.material_id"
             >
               <option disabled selected>select material</option>
               <option
-                  :key="material.id"
-                  :value="material.id"
-                  v-for="material in typeMaterials"
+                :key="material.id"
+                :value="material.id"
+                v-for="material in typeMaterials"
               >
                 <!--{{ material.short_material_name }}-->
-                {{ material.material_name.substr(0, 50) + "..." }}
+                {{ material.material_name }}
               </option>
 
               <!-- material error handling -->
               <div
-                  :class="{
+                :class="{
                   'invalid-feedback':
                     field_validation_data && field_validation_data.material,
                 }"
-                  v-if="field_validation_data && field_validation_data.material"
+                v-if="field_validation_data && field_validation_data.material"
               >
                 {{
                   !isOnline
-                      ? field_validation_data.material
-                      : field_validation_data.material[0]
+                    ? field_validation_data.material
+                    : field_validation_data.material[0]
                 }}
               </div>
             </select>
@@ -153,11 +153,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-lg-0">
                   <input
-                      class="form-control"
-                      disabled
-                      id="serial_number"
-                      placeholder="Serial Number"
-                      v-model="work_data.serial_no"
+                    class="form-control"
+                    disabled
+                    id="serial_number"
+                    placeholder="Serial Number"
+                    v-model="work_data.serial_no"
                   />
                 </div>
               </div>
@@ -166,11 +166,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-lg-0">
                   <input
-                      class="form-control"
-                      disabled
-                      id="unit"
-                      placeholder="Unit"
-                      v-model="work_data.unit"
+                    class="form-control"
+                    disabled
+                    id="unit"
+                    placeholder="Unit"
+                    v-model="work_data.unit"
                   />
                 </div>
               </div>
@@ -179,11 +179,11 @@
               <div class="col-md-4">
                 <div class="form-group mb-0">
                   <input
-                      class="form-control"
-                      disabled
-                      id="quantity"
-                      placeholder="Quantity"
-                      v-model="work_data.quantity"
+                    class="form-control"
+                    disabled
+                    id="quantity"
+                    placeholder="Quantity"
+                    v-model="work_data.quantity"
                   />
                 </div>
               </div>
@@ -201,33 +201,33 @@
                 <div class="position-relative form-group mb-lg-0">
                   <label>Date</label>
                   <input
-                      :class="{
+                    :class="{
                       'is-invalid':
                         field_validation_data &&
                         field_validation_data.submission_date,
                     }"
-                      class="form-control"
-                      id="submission_date"
-                      type="date"
-                      v-model="work_data.submission_date"
+                    class="form-control"
+                    id="submission_date"
+                    type="date"
+                    v-model="work_data.submission_date"
                   />
 
                   <!--Error Handling-->
                   <div
-                      :class="{
+                    :class="{
                       'invalid-feedback':
                         field_validation_data &&
                         field_validation_data.submission_date,
                     }"
-                      v-if="
+                    v-if="
                       field_validation_data &&
                         field_validation_data.submission_date
                     "
                   >
                     {{
                       !isOnline
-                          ? field_validation_data.submission_date
-                          : field_validation_data.submission_date[0]
+                        ? field_validation_data.submission_date
+                        : field_validation_data.submission_date[0]
                     }}
                   </div>
                 </div>
@@ -236,42 +236,42 @@
               <!-- WorkProgress -->
               <div class="col-md-6">
                 <div class="position-relative form-group mb-0">
-                  <label>Work Progress</label> <br/>
+                  <label>Work Progress</label> <br />
                   <!-- <input type="range" class="form-range w-100 mt-2" v-model="work_progress"> -->
                   <!-- <p style="position: absolute; right: 0">{{work_progress}}</p> -->
 
                   <input
-                      :class="{
+                    :class="{
                       'is-invalid':
                         field_validation_data &&
                         field_validation_data.work_progress,
                     }"
-                      class="form-control"
-                      id="work_progress"
-                      placeholder="0"
-                      type="text"
-                      min="0"
-                      step=".01"
-                      v-model="work_data.work_progress"
-                      maxlength="6"
+                    class="form-control"
+                    id="work_progress"
+                    placeholder="0"
+                    type="text"
+                    min="0"
+                    step=".01"
+                    v-model="work_data.work_progress"
+                    maxlength="6"
                   />
 
                   <!--Error Handling-->
                   <div
-                      :class="{
+                    :class="{
                       'invalid-feedback':
                         field_validation_data &&
                         field_validation_data.work_progress,
                     }"
-                      v-if="
+                    v-if="
                       field_validation_data &&
                         field_validation_data.work_progress
                     "
                   >
                     {{
                       !isOnline
-                          ? field_validation_data.work_progress
-                          : field_validation_data.work_progress[0]
+                        ? field_validation_data.work_progress
+                        : field_validation_data.work_progress[0]
                     }}
                   </div>
                 </div>
@@ -284,10 +284,10 @@
           <!-- Submit Button -->
           <div class="btn-container">
             <button
-                :disabled="isDataSubmit ? true : false"
-                @submit.prevent="submitBillSubmissionForm"
-                class=" btn btn-primary mt-1"
-                id="submit_button"
+              :disabled="isDataSubmit ? true : false"
+              @submit.prevent="submitBillSubmissionForm"
+              class=" btn btn-primary mt-1"
+              id="submit_button"
             >
               {{ isDataSubmit ? "Loading..." : "SUBMIT" }}
             </button>
@@ -308,7 +308,7 @@
 import $ from "jquery";
 import axios from "axios";
 import Swal from "sweetalert2";
-import {getRequest, postRequest} from "@/plugins/requestHandler";
+import { getRequest, postRequest } from "@/plugins/requestHandler";
 
 // import Select2Component
 // import Select2 from "vue3-select2-component";
@@ -407,7 +407,7 @@ export default {
         }
       }
     },
-    setMaterialData: function () {
+    setMaterialData: function() {
       let selected_material = this.materials.filter((item) => {
         return item.id === this.work_data.material_id;
       });
@@ -458,10 +458,10 @@ export default {
     },
     validateRequest() {
       if (
-          !this.work_data.bill_id ||
-          !this.work_data.type_id ||
-          !this.work_data.material_id ||
-          !this.work_data.work_progress
+        !this.work_data.bill_id ||
+        !this.work_data.type_id ||
+        !this.work_data.material_id ||
+        !this.work_data.work_progress
       ) {
         Swal.fire({
           icon: "error",
@@ -509,8 +509,8 @@ export default {
     },
     fireSuccessMessage(online) {
       let message = online
-          ? "Work Submitted Successfully!"
-          : "Work Submitted Successfully & Processing in the Background...";
+        ? "Work Submitted Successfully!"
+        : "Work Submitted Successfully & Processing in the Background...";
       Swal.fire({
         icon: "success",
         html: `${message}
@@ -530,7 +530,7 @@ export default {
       });
 
       $(".SwalBtn2").on("click", () => {
-        this.$router.push({path: "/work-submission-list"});
+        this.$router.push({ path: "/work-submission-list" });
         Swal.close();
       });
     },
