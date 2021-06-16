@@ -27,6 +27,31 @@
   <CheckOnlineOrOffline class="mb-4" />
 
   <div class="container mb-4">
+    <form
+      class="form-group shadow-sm bg-white rounded p-3"
+      @change="loadWorkSubmission"
+    >
+      <div class="input-group">
+        <div class="input-group-prepend ">
+          <label class="input-group-text " for="inputGroupSelect01"
+            ><fa-icon icon="search"
+          /></label>
+        </div>
+        <select class="custom-select" v-model="selectedBillId">
+          >
+          <option value="" disabled>Filter by Bill...</option>
+          <option
+            v-for="(bill, index) in all_bills"
+            :key="index"
+            :value="bill.id"
+            >{{ bill.bill_name }}</option
+          >
+        </select>
+      </div>
+    </form>
+
+    <!-- <pre> {{ all_bills }} </pre> -->
+
     <!-- Start Data Loader -->
     <div v-if="isLoading" class="loading-container">
       <div class="d-flex align-items-center">
@@ -200,6 +225,8 @@ export default {
   name: "WorkSubmissionList",
   data() {
     return {
+      all_bills: "",
+      selectedBillId: "",
       all_work_submissions: [],
       url: "https://dushanbe.apis.lp-report.com/api/work-submissions/",
       currentPage: 1,
@@ -218,6 +245,17 @@ export default {
     };
   },
   methods: {
+    async getBills() {
+      if (localStorage.getItem("bills")) {
+        this.all_bills = JSON.parse(localStorage.getItem("bills"));
+      } else {
+        this.all_bills = await getRequest("bills/");
+        if (this.all_bills) {
+          localStorage.setItem("bills", JSON.stringify(this.all_bills));
+        }
+      }
+    },
+
     loadSubmittedData() {
       if (!window.navigator.onLine === true) {
         let ls = localStorage.getItem("work_submissions");
@@ -229,7 +267,7 @@ export default {
     },
 
     /* Work Submission (GET): https://dushanbe.apis.lp-report.com/api/work-submissions/ */
-    loadWorkSubmission() {
+    async loadWorkSubmission() {
       if (!this.isOnline) {
         if (localStorage.getItem("work_submissions")) {
           this.all_work_submissions = JSON.parse(
@@ -249,8 +287,11 @@ export default {
         page: this.$route.query.page,
       };
 
+      let searchQuery = `?bill=${this.selectedBillId}`;
+      // console.log("Loaded data");
+
       axios
-        .get(this.url, {
+        .get(this.url + searchQuery, {
           headers: {
             Authorization: `token ${token}`,
           },
@@ -327,7 +368,13 @@ export default {
     });
 
     this.loadWorkSubmission();
+    this.getBills();
+    // console.log("Created");
   },
+  // updated() {
+  //   this.getBills();
+  //   console.log("updated");
+  // },
 
   // computed: {
   //   // show all  posts
