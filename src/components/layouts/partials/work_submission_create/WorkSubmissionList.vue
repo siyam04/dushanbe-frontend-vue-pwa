@@ -39,7 +39,7 @@
         </div>
         <select class="custom-select" v-model="selectedBillId">
           >
-          <option value="" disabled>Filter by Bill...</option>
+          <option value="" disabled>Filter by Bill name...</option>
           <option
             v-for="(bill, index) in all_bills"
             :key="index"
